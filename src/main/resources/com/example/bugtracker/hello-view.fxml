@@ -74,7 +74,10 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnTestOpen" layoutX="136.0" layoutY="440.0" mnemonicParsing="false" onAction="#testOpen" text="Test Open" />
+      <Button fx:id="btnTestOpen" layoutX="186.0" layoutY="440.0" mnemonicParsing="false" onAction="#testOpen" text="Open" />
+      <Button fx:id="btnUpload" layoutX="107.0" layoutY="440.0" mnemonicParsing="false" onAction="#uploadPdf" text="Upload" />
+      <Label layoutX="54.0" layoutY="444.0" text="Testing:" />
+      <Label layoutX="681.0" layoutY="462.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
    </children>
    <stylesheets>
       <URL value="@style.css" />

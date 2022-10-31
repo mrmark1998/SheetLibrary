@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 
 import java.io.File;
@@ -21,8 +22,12 @@ import java.util.ResourceBundle;
 
 public class HelloController {
 
+
     @FXML
     private Button btnTestOpen;
+
+    @FXML
+    private Button btnTestUpload;
 
     @FXML
     private Button btnDelete;
@@ -205,4 +210,23 @@ public class HelloController {
 
         this.tfStatus.setText("Opening Sheet Music ...");
     }
+
+
+    @FXML
+    void uploadPdf(ActionEvent event) {
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Open Sheet Music File");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        File defaultDirectory = new File("D:\\Music\\Sheets");
+        fc.setInitialDirectory(defaultDirectory);
+        File selectedFile = fc.showOpenDialog(null);
+        String url = selectedFile.toURI().toString();
+        Alert a = new Alert(Alert.AlertType.NONE);
+        if(url != null) {
+            a.setAlertType(Alert.AlertType.CONFIRMATION);
+            a.setContentText("You have uploaded " + url);
+            a.show();
+        }
+    }
 }
+
