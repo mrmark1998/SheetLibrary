@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" styleClass="backgroundColor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bugtracker.HelloController">
+   <children>
+      <VBox layoutX="26.0" layoutY="101.0" prefHeight="169.0" prefWidth="74.0" spacing="15.0">
+         <children>
+            <Label text="ID">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Title">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Composer">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Year">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Pages">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="100.0" layoutY="95.0" prefHeight="176.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <TextField fx:id="tfId" />
+            <TextField fx:id="tfTitle" layoutX="10.0" layoutY="10.0" />
+            <TextField fx:id="tfComposer" layoutX="10.0" layoutY="10.0" />
+            <TextField fx:id="tfYear" layoutX="10.0" layoutY="36.0" />
+            <TextField fx:id="tfPages" layoutX="10.0" layoutY="87.0" />
+         </children>
+      </VBox>
+      <TableView fx:id="tvSheets" layoutX="316.0" layoutY="95.0" onMouseClicked="#handleMouseAction" prefHeight="310.0" prefWidth="462.0">
+        <columns>
+          <TableColumn fx:id="colId" prefWidth="46.4000244140625" text="ID" />
+          <TableColumn fx:id="colTitle" prefWidth="161.5999755859375" text="Title" />
+            <TableColumn fx:id="colComposer" minWidth="0.0" prefWidth="126.4000244140625" text="Composer" />
+            <TableColumn fx:id="colYear" prefWidth="71.20001220703125" text="Year" />
+            <TableColumn fx:id="colPages" prefWidth="57.5999755859375" text="Pages" />
+        </columns>
+      </TableView>
+      <Button fx:id="btnInsert" layoutX="37.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="75.0" text="Insert" />
+      <Button fx:id="btnUpdate" layoutX="134.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="75.0" text="Update" />
+      <Button fx:id="btnDelete" layoutX="230.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="75.0" text="Delete" />
+      <Text fx:id="tfHeader" layoutX="202.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sheet Music Library">
+         <font>
+            <Font size="46.0" />
+         </font>
+      </Text>
+      <Button layoutX="107.0" layoutY="392.0" mnemonicParsing="false" onAction="#connectToDb" text="Connect To Database" />
+      <Text fx:id="tfStatus" layoutX="56.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Connect to DB" textAlignment="CENTER" wrappingWidth="230.9366455078125">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Button fx:id="btnTestOpen" layoutX="136.0" layoutY="440.0" mnemonicParsing="false" onAction="#testOpen" text="Test Open" />
+   </children>
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
+</AnchorPane>
