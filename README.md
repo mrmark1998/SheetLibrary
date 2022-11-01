@@ -8,19 +8,19 @@ I created this app to easily organize all of the PDF sheet music that I had clut
 - JavaFX
 - SceneBuilder
 - XAMPP server with Apache/MySQL
+11/1/22
+- Created connections between client and server using Apache Commons Net FTP Protocol
+- User can now Upload/Download/Open/Download PDF of any record 
+- Program is mostly working but needs to be polished with some bugs here and there regarding SQL updates
 
 10/30-10/31/22 -
 - Created app 
 
-
-
 <img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example2.png">
 
 Here are the implementation details that I would like the app to do in the future:
-- Create a socket with an online server to upload PDFs and access all
+- Create a socket with an online server to upload PDFs and access all - done 11/1
 - Be able to search and organize by Composer and Genre(make new column in SQL)
 - Clean up GUI
 
-
-
-<img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example3.PNG">
+<img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example3.png">
