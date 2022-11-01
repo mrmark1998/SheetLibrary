@@ -7,13 +7,16 @@ public class Sheets {
     private int year;
     private int pages;
 
+    private String path;
+
     //constructor
-    public Sheets(int id, String title, String composer, int year, int pages) {
+    public Sheets(int id, String title, String composer, int year, int pages, String path) {
         this.id = id;
         this.title = title;
         this.composer = composer;
         this.year = year;
         this.pages = pages;
+        this.path = path;
     }
 
     //getters
@@ -38,4 +41,7 @@ public class Sheets {
     }
 
 
+    public String getPath() {
+        return path;
+    }
 }

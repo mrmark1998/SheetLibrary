@@ -14,6 +14,13 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
+import java.io.IOException;
+
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPReply;
+
+
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -29,6 +36,9 @@ public class HelloController {
 
     @FXML
     private Button btnConnect;
+
+    @FXML
+    private CheckBox cbUpload;
 
     @FXML
     private Button btnClear;
@@ -62,6 +72,9 @@ public class HelloController {
 
     @FXML
     private TableColumn<Sheets, Integer> colYear;
+
+    @FXML
+    private TableColumn<Sheets, String> colPath;
 
     @FXML
     private TextField tfComposer;
@@ -171,11 +184,15 @@ public class HelloController {
             rs = st.executeQuery(query);
             Sheets sheets;
             while(rs.next()) {
+                String pathExists = "Y";
+                if(rs.getString("path").isEmpty()) pathExists = "N";
                 sheets = new Sheets(rs.getInt("id"),
                                     rs.getString("title"),
                                     rs.getString("composer"),
                                     rs.getInt("year"),
-                                    rs.getInt("pages"));
+                                    rs.getInt("pages"),
+                                    pathExists);
+
                 sheetList.add(sheets);
             }
         } catch(Exception ex) {
@@ -192,12 +209,9 @@ public class HelloController {
         colComposer.setCellValueFactory(new PropertyValueFactory<Sheets, String>("composer"));
         colYear.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("year"));
         colPages.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("pages"));
+        colPath.setCellValueFactory(new PropertyValueFactory<Sheets, String>("path"));
 
         tvSheets.setItems(list);
-
-    }
-
-    public void disconnect() {
 
     }
 
@@ -207,8 +221,15 @@ public class HelloController {
                                                     tfTitle.getText() + "','" +
                                                     tfComposer.getText() + "'," +
                                                     tfYear.getText() + "," +
-                                                    tfPages.getText() + ")";
+                                                    tfPages.getText() + ",'')";
         executeQuery(query);
+        if (cbUpload.isSelected()) {
+            uploadPdf();
+            System.out.println(fileToSend[0].getName());
+            query = "UPDATE sheets SET path = '" + fileToSend[0].getName() + "' WHERE id=" + tfId.getText();
+            executeQuery(query);
+            cbUpload.setSelected(false);
+        }
         showSheets();
     }
 
@@ -264,7 +285,7 @@ public class HelloController {
     final File[] fileToSend = new File[1];
 
     @FXML
-    void uploadPdf(ActionEvent event) {
+    void uploadPdf() {
         FileChooser fc = new FileChooser();
         fc.setTitle("Open Sheet Music File");
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.pdf"));
@@ -283,54 +304,59 @@ public class HelloController {
         }
     }
 
+    //FTP Server Variables -- Edit your settings here
+    final String server = "127.0.0.1";
+    final int port = 21;
+    final String username = "root";
+    final String password = "";
+
     public void createRecord() {
         if(fileToSend[0] == null) {
             this.tfStatus.setText("Please choose a file first.");
         } else {
             try {
-                System.out.println("Creating record...");
-                FileInputStream fileInputStream = new FileInputStream(fileToSend[0].getAbsolutePath());
-                Socket socket = new Socket("127.0.0.1", 8080);
-                System.out.println("Is socket connected? " + socket.isConnected());
-                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                int reply;
+                FTPClient ftp = new FTPClient();
 
-                String fileName = fileToSend[0].getName();
-                byte[] fileNameBytes = fileName.getBytes();
+                ftp.connect(server, port);
+                ftp.login(username, password);
+                ftp.setFileType(FTP.BINARY_FILE_TYPE);
+                System.out.println("Connected to " + server + ".");
+                System.out.print(ftp.getReplyString());
 
-                byte[] fileContentBytes = new byte[(int) fileToSend[0].length()];
-                fileInputStream.read(fileContentBytes);
+                // After connection attempt, you should check the reply code to verify
+                // success.
+                reply = ftp.getReplyCode();
 
+                File file = new File(fileToSend[0].getAbsolutePath());
+                InputStream inputStream = new FileInputStream(file);
 
-                System.out.println("Sending Data: " + fileToSend[0].getAbsolutePath());
-                dataOutputStream.writeInt(fileNameBytes.length);
-                dataOutputStream.write(fileNameBytes);
-                dataOutputStream.writeInt(fileContentBytes.length);
-                dataOutputStream.write(fileContentBytes);
-                this.tfStatus.setText("Sheet has been uploaded.");
-                System.out.println("Sheet uploaded");
+                System.out.println("Start uploading file");
+                OutputStream outputStream = ftp.storeFileStream(fileToSend[0].getName());
+                byte[] bytesIn = new byte[4096];
+                int read = 0;
 
-                /*---------new variation attempt--------
-                BufferedInputStream fileIn = new BufferedInputStream(new FileInputStream(fileToSend[0]));
-                BufferedOutputStream out =  new BufferedOutputStream(socket.getOutputStream());
-                byte[] buffer = new byte[1024];
-                int numRead;
-                //Checking if bytes available to read to the buffer.
-                while( (numRead = fileIn.read(buffer)) >= 0)
-                {
-                    // Writes bytes to Output Stream from 0 to total number of bytes
-                    out.write(buffer, 0, numRead);
+                while ((read = inputStream.read(bytesIn)) != -1) {
+                    outputStream.write(bytesIn, 0, read);
                 }
-                System.out.println("Writing bytes to Output Stream");
+                inputStream.close();
+                outputStream.close();
 
-                // Flush - send file
-                out.flush();
+                boolean completed = ftp.completePendingCommand();
+                if (completed) {
+                    System.out.println("File is uploaded successfully.");
+                }
 
-                // close OutputStream
-                out.close();
-                fileIn.close();
-                //-------------- end variation ----------*/
-            } catch (IOException error) {
-                error.printStackTrace();
+                if (!FTPReply.isPositiveCompletion(reply)) {
+                    ftp.disconnect();
+                    System.err.println("FTP server refused connection.");
+                    System.exit(1);
+                }
+                ftp.logout();
+                System.out.println("FTP Connection Closed.");
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }

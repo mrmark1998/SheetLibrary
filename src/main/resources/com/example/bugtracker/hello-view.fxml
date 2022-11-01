@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -11,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="800.0" styleClass="backgroundColor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bugtracker.HelloController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="882.0" styleClass="backgroundColor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bugtracker.HelloController">
    <children>
       <VBox layoutX="26.0" layoutY="101.0" prefHeight="169.0" prefWidth="74.0" spacing="15.0">
          <children>
@@ -51,19 +52,20 @@
             <TextField fx:id="tfPages" layoutX="10.0" layoutY="87.0" />
          </children>
       </VBox>
-      <TableView fx:id="tvSheets" layoutX="316.0" layoutY="95.0" onMouseClicked="#handleMouseAction" prefHeight="356.0" prefWidth="462.0">
+      <TableView fx:id="tvSheets" layoutX="316.0" layoutY="95.0" onMouseClicked="#handleMouseAction" prefHeight="356.0" prefWidth="549.0">
         <columns>
           <TableColumn fx:id="colId" prefWidth="46.4000244140625" text="ID" />
-          <TableColumn fx:id="colTitle" prefWidth="161.5999755859375" text="Title" />
-            <TableColumn fx:id="colComposer" minWidth="0.0" prefWidth="126.4000244140625" text="Composer" />
-            <TableColumn fx:id="colYear" prefWidth="71.20001220703125" text="Year" />
-            <TableColumn fx:id="colPages" prefWidth="57.5999755859375" text="Pages" />
+          <TableColumn fx:id="colTitle" prefWidth="204.5" text="Title" />
+            <TableColumn fx:id="colComposer" minWidth="0.0" prefWidth="141.5" text="Composer" />
+            <TableColumn fx:id="colYear" prefWidth="74.0" text="Year" />
+            <TableColumn fx:id="colPages" prefWidth="40.5" text="Pages" />
+            <TableColumn fx:id="colPath" prefWidth="41.0" text="Sheets" />
         </columns>
       </TableView>
       <Button fx:id="btnInsert" layoutX="37.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="75.0" text="Insert" />
       <Button fx:id="btnUpdate" layoutX="134.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="75.0" text="Update" />
       <Button fx:id="btnDelete" layoutX="230.0" layoutY="334.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="26.0" prefWidth="75.0" text="Delete" />
-      <Text fx:id="tfHeader" layoutX="202.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sheet Music Library">
+      <Text fx:id="tfHeader" layoutX="230.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sheet Music Library">
          <font>
             <Font size="46.0" />
          </font>
@@ -76,8 +78,9 @@
       </Text>
       <Button fx:id="btnOpen" layoutX="186.0" layoutY="440.0" mnemonicParsing="false" onAction="#openPdf" text="Open" />
       <Button fx:id="btnUpload" layoutX="107.0" layoutY="440.0" mnemonicParsing="false" onAction="#uploadPdf" text="Upload" />
-      <Label layoutX="677.0" layoutY="458.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
+      <Label layoutX="758.0" layoutY="458.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
       <Button fx:id="btnClear" layoutX="254.0" layoutY="267.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="20.0" prefWidth="46.0" text="Clear" />
+      <CheckBox fx:id="cbUpload" layoutX="100.0" layoutY="273.0" mnemonicParsing="false" text="Upload Sheets" />
    </children>
    <stylesheets>
       <URL value="@style.css" />
