@@ -42,7 +42,7 @@
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="100.0" layoutY="95.0" prefHeight="176.0" prefWidth="200.0" spacing="10.0">
+      <VBox layoutX="100.0" layoutY="95.0" prefHeight="193.0" prefWidth="200.0" spacing="10.0">
          <children>
             <TextField fx:id="tfId" />
             <TextField fx:id="tfTitle" layoutX="10.0" layoutY="10.0" />
@@ -51,7 +51,7 @@
             <TextField fx:id="tfPages" layoutX="10.0" layoutY="87.0" />
          </children>
       </VBox>
-      <TableView fx:id="tvSheets" layoutX="316.0" layoutY="95.0" onMouseClicked="#handleMouseAction" prefHeight="310.0" prefWidth="462.0">
+      <TableView fx:id="tvSheets" layoutX="316.0" layoutY="95.0" onMouseClicked="#handleMouseAction" prefHeight="356.0" prefWidth="462.0">
         <columns>
           <TableColumn fx:id="colId" prefWidth="46.4000244140625" text="ID" />
           <TableColumn fx:id="colTitle" prefWidth="161.5999755859375" text="Title" />
@@ -68,16 +68,16 @@
             <Font size="46.0" />
          </font>
       </Text>
-      <Button layoutX="107.0" layoutY="392.0" mnemonicParsing="false" onAction="#connectToDb" text="Connect To Database" />
-      <Text fx:id="tfStatus" layoutX="56.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Connect to DB" textAlignment="CENTER" wrappingWidth="230.9366455078125">
+      <Button fx:id="btnConnect" layoutX="107.0" layoutY="392.0" mnemonicParsing="false" onAction="#connectToDb" text="Connect To Database" />
+      <Text fx:id="tfStatus" layoutX="56.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Connect to Database" textAlignment="CENTER" wrappingWidth="230.9366455078125">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="btnTestOpen" layoutX="186.0" layoutY="440.0" mnemonicParsing="false" onAction="#testOpen" text="Open" />
+      <Button fx:id="btnOpen" layoutX="186.0" layoutY="440.0" mnemonicParsing="false" onAction="#openPdf" text="Open" />
       <Button fx:id="btnUpload" layoutX="107.0" layoutY="440.0" mnemonicParsing="false" onAction="#uploadPdf" text="Upload" />
-      <Label layoutX="54.0" layoutY="444.0" text="Testing:" />
-      <Label layoutX="681.0" layoutY="462.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
+      <Label layoutX="677.0" layoutY="458.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
+      <Button fx:id="btnClear" layoutX="254.0" layoutY="267.0" mnemonicParsing="false" onAction="#clearFields" prefHeight="20.0" prefWidth="46.0" text="Clear" />
    </children>
    <stylesheets>
       <URL value="@style.css" />

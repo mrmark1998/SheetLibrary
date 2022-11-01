@@ -1,5 +1,6 @@
 package com.example.bugtracker;
 
+import javafx.animation.PauseTransition;
 import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -11,8 +12,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
+import javafx.util.Duration;
 
-import java.io.File;
+import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -24,10 +28,16 @@ public class HelloController {
 
 
     @FXML
-    private Button btnTestOpen;
+    private Button btnConnect;
 
     @FXML
-    private Button btnTestUpload;
+    private Button btnClear;
+
+    @FXML
+    private Button btnOpen;
+
+    @FXML
+    private Button btnUpload;
 
     @FXML
     private Button btnDelete;
@@ -78,24 +88,58 @@ public class HelloController {
     @FXML
     private Text tfStatus;
 
+    public static boolean connected = false;
     @FXML
     void connectToDb(ActionEvent event) {
-        this.tfStatus.setText("Database Connected!");
-        showSheets();
+        if(!connected) {
+            try {
+                this.tfStatus.setText("Database Connected!");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished( a -> this.tfStatus.setText(""));
+                delay.play();
+                this.btnConnect.setText("Disconnect from DB");
+                System.out.println("Database Connection Success");
+                showSheets();
+                connected = true;
+            } catch (Exception ex) {
+                this.tfStatus.setText("Database Error!");
+            }
+        } else {
+            this.btnConnect.setText("Connect to Database");
+            this.tfStatus.setText("Database Disconnected!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished( a -> this.tfStatus.setText("Please Connect to Database"));
+            delay.play();
+            System.out.println("Database Disconnected");
+            tvSheets.getItems().clear();
+            connected = false;
+        }
+
     }
     @FXML
     void handleButtonAction(ActionEvent event) {
-        if(event.getSource() == btnInsert) {
-            this.tfStatus.setText("Record inserted--->");
-            insertRecord();
-        }
-        if(event.getSource() == btnUpdate) {
-            this.tfStatus.setText("Record updated!");
-            updateRecord();
-        }
-        if(event.getSource() == btnDelete) {
-            this.tfStatus.setText("Record deleted!");
-            deleteRecord();
+        if(connected) {
+            if (event.getSource() == btnInsert) {
+                this.tfStatus.setText("Record inserted--->");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished( a -> this.tfStatus.setText(""));
+                delay.play();
+                insertRecord();
+            }
+            if (event.getSource() == btnUpdate) {
+                this.tfStatus.setText("Record updated!");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished( a -> this.tfStatus.setText(""));
+                delay.play();
+                updateRecord();
+            }
+            if (event.getSource() == btnDelete) {
+                this.tfStatus.setText("Record deleted!");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished( a -> this.tfStatus.setText(""));
+                delay.play();
+                deleteRecord();
+            }
         }
     }
 
@@ -107,7 +151,6 @@ public class HelloController {
         Connection conn;
         try{
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sheets", "root", "");
-            System.out.println("Database Connection success");
             return conn;
         } catch(Exception ex){
             System.out.println("Error: " + ex.getMessage());
@@ -154,6 +197,10 @@ public class HelloController {
 
     }
 
+    public void disconnect() {
+
+    }
+
     //------------ SQL BUTTONS ---------------------
     private void insertRecord() {                   //the ID will auto increment
         String query = "INSERT INTO sheets VALUES (" + tfId.getText() + ",'" +
@@ -194,39 +241,111 @@ public class HelloController {
     }
     @FXML
     public void handleMouseAction(Event event) {
-        Sheets sheet = tvSheets.getSelectionModel().getSelectedItem();
-        tfId.setText(""+sheet.getId());
-        tfTitle.setText(sheet.getTitle());
-        tfComposer.setText(sheet.getComposer());
-        tfYear.setText(""+sheet.getYear());
-        tfPages.setText(""+sheet.getPages());
+        if(tvSheets.getSelectionModel().getSelectedItem() != null) {
+            Sheets sheet = tvSheets.getSelectionModel().getSelectedItem();
+            tfId.setText("" + sheet.getId());
+            tfTitle.setText(sheet.getTitle());
+            tfComposer.setText(sheet.getComposer());
+            tfYear.setText("" + sheet.getYear());
+            tfPages.setText("" + sheet.getPages());
+        }
     }
 
     @FXML
-    void testOpen(ActionEvent event) {
-        final Hyperlink hyperlink = new Hyperlink("D:\\Music\\Sheets\\Lizst - Widmung, Complete Score (S.566) (filter).pdf");
+    void openPdf(ActionEvent event) throws Exception {
+
+        final Hyperlink hyperlink = new Hyperlink("D:\\Music\\Sheets\\Liszt_-_S566_Widmung_Liebeslied_(peters).pdf");
 
         HelloApplication.getStaticHostServices().showDocument(hyperlink.getText());
 
         this.tfStatus.setText("Opening Sheet Music ...");
     }
 
+    final File[] fileToSend = new File[1];
 
     @FXML
     void uploadPdf(ActionEvent event) {
         FileChooser fc = new FileChooser();
         fc.setTitle("Open Sheet Music File");
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.pdf"));
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.jpg"));
         File defaultDirectory = new File("D:\\Music\\Sheets");
         fc.setInitialDirectory(defaultDirectory);
         File selectedFile = fc.showOpenDialog(null);
-        String url = selectedFile.toURI().toString();
-        Alert a = new Alert(Alert.AlertType.NONE);
-        if(url != null) {
+        if(selectedFile != null) {
+            String url = selectedFile.toURI().toString();
+            fileToSend[0] = selectedFile;
+            Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.CONFIRMATION);
-            a.setContentText("You have uploaded " + url);
+            a.setContentText("You have uploaded " + fileToSend[0].getName());
             a.show();
+            createRecord();
         }
     }
+
+    public void createRecord() {
+        if(fileToSend[0] == null) {
+            this.tfStatus.setText("Please choose a file first.");
+        } else {
+            try {
+                System.out.println("Creating record...");
+                FileInputStream fileInputStream = new FileInputStream(fileToSend[0].getAbsolutePath());
+                Socket socket = new Socket("127.0.0.1", 8080);
+                System.out.println("Is socket connected? " + socket.isConnected());
+                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+
+                String fileName = fileToSend[0].getName();
+                byte[] fileNameBytes = fileName.getBytes();
+
+                byte[] fileContentBytes = new byte[(int) fileToSend[0].length()];
+                fileInputStream.read(fileContentBytes);
+
+
+                System.out.println("Sending Data: " + fileToSend[0].getAbsolutePath());
+                dataOutputStream.writeInt(fileNameBytes.length);
+                dataOutputStream.write(fileNameBytes);
+                dataOutputStream.writeInt(fileContentBytes.length);
+                dataOutputStream.write(fileContentBytes);
+                this.tfStatus.setText("Sheet has been uploaded.");
+                System.out.println("Sheet uploaded");
+
+                /*---------new variation attempt--------
+                BufferedInputStream fileIn = new BufferedInputStream(new FileInputStream(fileToSend[0]));
+                BufferedOutputStream out =  new BufferedOutputStream(socket.getOutputStream());
+                byte[] buffer = new byte[1024];
+                int numRead;
+                //Checking if bytes available to read to the buffer.
+                while( (numRead = fileIn.read(buffer)) >= 0)
+                {
+                    // Writes bytes to Output Stream from 0 to total number of bytes
+                    out.write(buffer, 0, numRead);
+                }
+                System.out.println("Writing bytes to Output Stream");
+
+                // Flush - send file
+                out.flush();
+
+                // close OutputStream
+                out.close();
+                fileIn.close();
+                //-------------- end variation ----------*/
+            } catch (IOException error) {
+                error.printStackTrace();
+            }
+        }
+    }
+
+
+
+    @FXML
+    void clearFields(ActionEvent event) {
+        tfId.clear();
+        tfTitle.clear();
+        tfComposer.clear();
+        tfYear.clear();
+        tfPages.clear();
+    }
 }
+
+
 
