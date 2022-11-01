@@ -133,10 +133,6 @@ public class HelloController {
     void handleButtonAction(ActionEvent event) {
         if(connected) {
             if (event.getSource() == btnInsert) {
-                this.tfStatus.setText("Record inserted--->");
-                PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                delay.setOnFinished( a -> this.tfStatus.setText(""));
-                delay.play();
                 insertRecord();
             }
             if (event.getSource() == btnUpdate) {
@@ -217,20 +213,32 @@ public class HelloController {
 
     //------------ SQL BUTTONS ---------------------
     private void insertRecord() {                   //the ID will auto increment
-        String query = "INSERT INTO sheets VALUES (" + tfId.getText() + ",'" +
-                                                    tfTitle.getText() + "','" +
-                                                    tfComposer.getText() + "'," +
-                                                    tfYear.getText() + "," +
-                                                    tfPages.getText() + ",'')";
-        executeQuery(query);
-        if (cbUpload.isSelected()) {
-            uploadPdf();
-            System.out.println(fileToSend[0].getName());
-            query = "UPDATE sheets SET path = '" + fileToSend[0].getName() + "' WHERE id=" + tfId.getText();
+        try {
+            String query = "INSERT INTO sheets VALUES (" + tfId.getText() + ",'" +
+                    tfTitle.getText() + "','" +
+                    tfComposer.getText() + "'," +
+                    tfYear.getText() + "," +
+                    tfPages.getText() + ",'')";
             executeQuery(query);
-            cbUpload.setSelected(false);
+            if (cbUpload.isSelected()) {
+                uploadPdf();
+                System.out.println(fileToSend[0].getName());
+                query = "UPDATE sheets SET path = '" + fileToSend[0].getName() + "' WHERE id=" + tfId.getText();
+                executeQuery(query);
+            }
+
+            this.tfStatus.setText("Record inserted.");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished(a -> this.tfStatus.setText(""));
+            delay.play();
+            showSheets();
+        } catch (Exception ex) {
+            this.tfStatus.setText("Record NOT inserted!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished(a -> this.tfStatus.setText(""));
+            delay.play();
+            ex.printStackTrace();
         }
-        showSheets();
     }
 
     private void updateRecord() {
@@ -370,6 +378,8 @@ public class HelloController {
         tfComposer.clear();
         tfYear.clear();
         tfPages.clear();
+        cbUpload.setSelected(false);
+        tvSheets.getSelectionModel().select(null);
     }
 }
 
