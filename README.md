@@ -8,10 +8,11 @@ I created this app to easily organize all of the PDF sheet music that I had clut
 - JavaFX
 - SceneBuilder
 - XAMPP server with Apache/MySQL
+
 11/1/22
 - Created connections between client and server using Apache Commons Net FTP Protocol
 - User can now Upload/Download/Open/Download PDF of any record 
-- Program is mostly working but needs to be polished with some bugs here and there regarding SQL updates
+- Program is mostly working but needs to be polished with some bugs here and there regarding SQL update
 
 10/30-10/31/22 -
 - Created app 
