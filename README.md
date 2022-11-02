@@ -9,6 +9,11 @@ I created this app to easily organize all of the PDF sheet music that I had clut
 - SceneBuilder
 - XAMPP server with Apache/MySQL
 
+11/2/22
+- Optimized the program's logic
+- - Did extensive bug tracking and debugged many bugs from the program.
+- Mainly added conditional clauses, but was able to clean up a lot of the code
+
 11/1/22
 - Created connections between client and server using Apache Commons Net FTP Protocol
 - User can now Upload/Download/Open/Download PDF of any record 
