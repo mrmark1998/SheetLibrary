@@ -11,7 +11,7 @@ I created this app to easily organize all of the PDF sheet music that I had clut
 
 11/2/22
 - Optimized the program's logic
-- - Did extensive bug tracking and debugged many bugs from the program.
+- Did extensive bug tracking and debugged many bugs from the program.
 - Mainly added conditional clauses, but was able to clean up a lot of the code
 
 11/1/22
