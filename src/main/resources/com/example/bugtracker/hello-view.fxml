@@ -55,12 +55,12 @@
       </VBox>
       <TableView fx:id="tvSheets" layoutX="316.0" layoutY="95.0" onMouseClicked="#handleMouseAction" prefHeight="336.0" prefWidth="549.0">
         <columns>
-          <TableColumn fx:id="colId" prefWidth="46.4000244140625" text="ID" />
-          <TableColumn fx:id="colTitle" prefWidth="204.5" text="Title" />
-            <TableColumn fx:id="colComposer" minWidth="0.0" prefWidth="141.5" text="Composer" />
-            <TableColumn fx:id="colYear" prefWidth="74.0" text="Year" />
-            <TableColumn fx:id="colPages" prefWidth="40.5" text="Pages" />
-            <TableColumn fx:id="colPath" prefWidth="41.0" text="Sheets" />
+          <TableColumn fx:id="colId" prefWidth="33.0" text="ID" />
+          <TableColumn fx:id="colTitle" prefWidth="201.0" text="Title" />
+            <TableColumn fx:id="colComposer" minWidth="0.0" prefWidth="131.5" text="Composer" />
+            <TableColumn fx:id="colYear" prefWidth="42.0" text="Year" />
+            <TableColumn fx:id="colPages" prefWidth="41.5" text="Pages" />
+            <TableColumn fx:id="colPath" prefWidth="85.0" text="Sheets" />
         </columns>
       </TableView>
       <Button fx:id="btnInsert" layoutX="76.0" layoutY="312.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="70.0" text="Insert" />

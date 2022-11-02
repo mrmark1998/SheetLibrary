@@ -1,7 +1,6 @@
 package com.example.bugtracker;
 
 import javafx.animation.PauseTransition;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
-import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
@@ -22,11 +20,7 @@ import org.apache.commons.net.ftp.FTPReply;
 
 
 import java.io.*;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.URL;
 import java.sql.*;
-import java.util.ResourceBundle;
 
 public class HelloController {
 
@@ -150,24 +144,12 @@ public class HelloController {
                 insertRecord();
             }
             if (event.getSource() == btnUpdate) {
-                this.tfStatus.setText("Record updated!");
-                PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                delay.setOnFinished( a -> this.tfStatus.setText(""));
-                delay.play();
                 updateRecord();
             }
             if (event.getSource() == btnDelete) {
-                this.tfStatus.setText("Record deleted!");
-                PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                delay.setOnFinished( a -> this.tfStatus.setText(""));
-                delay.play();
                 deleteRecord();
             }
         }
-    }
-
-    public void initialize(URL url, ResourceBundle rb) {
-        showSheets();
     }
 
     public Connection getConnection(){
@@ -212,7 +194,6 @@ public class HelloController {
 
     public void showSheets() {
         ObservableList<Sheets> list = getSheetsList();
-
         colId.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("id"));
         colTitle.setCellValueFactory(new PropertyValueFactory<Sheets, String>("title"));
         colComposer.setCellValueFactory(new PropertyValueFactory<Sheets, String>("composer"));
@@ -221,29 +202,42 @@ public class HelloController {
         colPath.setCellValueFactory(new PropertyValueFactory<Sheets, String>("path"));
 
         tvSheets.setItems(list);
-
     }
 
     //------------ SQL BUTTONS ---------------------
     private void insertRecord() {          //the ID will auto increment
         try {
-            String query = "INSERT INTO sheets VALUES (" + tfId.getText() + ",'" +
-                                                        tfTitle.getText() + "','" +
-                                                        tfComposer.getText() + "'," +
-                                                        tfYear.getText() + "," +
-                                                        tfPages.getText() + ",'')";
-            executeQuery(query);
             if (cbUpload.isSelected()) {
-                uploadPdf();
-                System.out.println(fileToSend[0].getName());
-                query = "UPDATE sheets SET path = '" + fileToSend[0].getName() + "' WHERE id=" + tfId.getText();
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Choose Sheet Music File");
+                fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.pdf", "*.jpg"));
+                File defaultDirectory = new File("D:\\Music\\Sheets");
+                fc.setInitialDirectory(defaultDirectory);
+                File selectedFile = fc.showOpenDialog(null);
+                if(selectedFile!= null) {
+                    insertPDFwithRecord(selectedFile);
+                    String query = "INSERT INTO sheets VALUES (" + tfId.getText() + ",'" +
+                                                                tfTitle.getText() + "','" +
+                                                                tfComposer.getText() + "'," +
+                                                                tfYear.getText() + "," +
+                                                                tfPages.getText() + ",'" +
+                                                                selectedFile.getName() + "')";
+                    executeQuery(query);
+                    showSheets();
+                }
+            } else {
+                String query = "INSERT INTO sheets VALUES (" + tfId.getText() + ",'" +
+                        tfTitle.getText() + "','" +
+                        tfComposer.getText() + "'," +
+                        tfYear.getText() + "," +
+                        tfPages.getText() + ",'')";
                 executeQuery(query);
+                showSheets();
+                this.tfStatus.setText("Record inserted.");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished(a -> this.tfStatus.setText(""));
+                delay.play();
             }
-            showSheets();
-            this.tfStatus.setText("Record inserted.");
-            PauseTransition delay = new PauseTransition(Duration.seconds(4));
-            delay.setOnFinished(a -> this.tfStatus.setText(""));
-            delay.play();
         } catch (Exception ex) {
             this.tfStatus.setText("Record NOT inserted!");
             PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -254,20 +248,44 @@ public class HelloController {
     }
 
     private void updateRecord() {
-    String query = "UPDATE sheets SET title = '" +   tfTitle.getText() +
-                                "', composer = '" + tfComposer.getText() +
-                                "', year = " +      tfYear.getText() +
-                                ", pages = " +      tfPages.getText() +
-                                " WHERE id = " +    tfId.getText();
-    executeQuery(query);
-    showSheets();
+        if (tvSheets.getSelectionModel().getSelectedItem() != null && tvSheets.getSelectionModel().getSelectedItem().getId() == Integer.parseInt(tfId.getText())) {
+            String query = "UPDATE sheets SET title = '" + tfTitle.getText() +
+                    "', composer = '" + tfComposer.getText() +
+                    "', year = " + tfYear.getText() +
+                    ", pages = " + tfPages.getText() +
+                    " WHERE id = " + tfId.getText();
+            executeQuery(query);
+            showSheets();
+
+            this.tfStatus.setText("Record updated!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished(a -> this.tfStatus.setText(""));
+            delay.play();
+        } else {
+            this.tfStatus.setText("Select correct record to update");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished(a -> this.tfStatus.setText(""));
+            delay.play();
+        }
+
     }
 
     private void deleteRecord() {
-        String query = "DELETE FROM sheets WHERE id = " +  tfId.getText();
-        executeQuery(query);
-        executeQuery("ALTER TABLE sheets AUTO_INCREMENT=1;");
-        showSheets();
+        if (tvSheets.getSelectionModel().getSelectedItem() != null && tvSheets.getSelectionModel().getSelectedItem().getId() == Integer.parseInt(tfId.getText())) {
+            String query = "DELETE FROM sheets WHERE id = " +  tfId.getText();
+            executeQuery(query);
+            showSheets();
+
+            this.tfStatus.setText("Record deleted!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished(a -> this.tfStatus.setText(""));
+            delay.play();
+        } else {
+            this.tfStatus.setText("Select correct record to delete!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished(a -> this.tfStatus.setText(""));
+            delay.play();
+        }
     }
 
     private void executeQuery(String query) {
@@ -300,7 +318,7 @@ public class HelloController {
     final String username = "root";
     final String password = "";
 
-    public void createRecord() {
+    public void sendFileFTP() {
         if(fileToSend[0] == null) {
             this.tfStatus.setText("Please choose a file first.");
         } else {
@@ -344,7 +362,15 @@ public class HelloController {
                 }
                 ftp.logout();
                 System.out.println("FTP Connection Closed.");
+                this.tfStatus.setText("Sheet Music Uploaded!");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished(a -> this.tfStatus.setText(""));
+                delay.play();
 
+                //Update the PATH if upload was successful
+                String query = "UPDATE sheets SET path = '" + fileToSend[0].getName() + "' WHERE id=" + tfId.getText();
+                executeQuery(query);
+                fileToSend[0] = null; //reset the fileToSend after uploading it
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -353,8 +379,23 @@ public class HelloController {
 
 
     //------------- Modify Sheet Music PDF Functions -----------------------------
+    public void insertPDFwithRecord(File selectedFile) {
+        try {
+            uploadFile(selectedFile);
+            showSheets();
+        } catch (Exception ex) {
+            this.tfStatus.setText("File NOT uploaded with Record!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(4));
+            delay.setOnFinished(a -> this.tfStatus.setText(""));
+            delay.play();
+            ex.printStackTrace();
+        }
+    }
+
+
     @FXML
     void uploadPdf() {
+        if(!connected) return;
         if (tvSheets.getSelectionModel().getSelectedItem() == null) {
             this.tfStatus.setText("Please Select Sheet to Replace!");
             PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -362,14 +403,15 @@ public class HelloController {
             delay.play();
         } else {
             try {
-                uploadFile();
-                String query = "UPDATE sheets SET path = '" + fileToSend[0].getName() + "' WHERE id=" + tfId.getText();
-                executeQuery(query);
-                if(!fileToSend[0].getName().isEmpty()) this.tfStatus.setText("File uploaded!");
+                FileChooser fc = new FileChooser();
+                fc.setTitle("Choose Sheet Music File");
+                fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.pdf", "*.jpg"));
+                fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.jpg"));
+                File defaultDirectory = new File("D:\\Music\\Sheets");
+                fc.setInitialDirectory(defaultDirectory);
+                File selectedFile = fc.showOpenDialog(null);
+                uploadFile(selectedFile);
                 showSheets();
-                PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                delay.setOnFinished(a -> this.tfStatus.setText(""));
-                delay.play();
             } catch (Exception ex) {
                 this.tfStatus.setText("File NOT Uploaded!");
                 PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -381,27 +423,20 @@ public class HelloController {
     }
 
     @FXML
-    void uploadFile() {
-        FileChooser fc = new FileChooser();
-        fc.setTitle("Open Sheet Music File");
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.pdf"));
-        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Files", "*.jpg"));
-        File defaultDirectory = new File("D:\\Music\\Sheets");
-        fc.setInitialDirectory(defaultDirectory);
-        File selectedFile = fc.showOpenDialog(null);
+    void uploadFile(File selectedFile) {
         if(selectedFile != null) {
-            String url = selectedFile.toURI().toString();
             fileToSend[0] = selectedFile;
             Alert a = new Alert(Alert.AlertType.NONE);
             a.setAlertType(Alert.AlertType.CONFIRMATION);
             a.setContentText("You have uploaded " + fileToSend[0].getName());
             a.show();
-            createRecord();
+            sendFileFTP();
         }
     }
 
     @FXML
     void downloadPdf()  {
+        if(!connected) return;
         if (tvSheets.getSelectionModel().getSelectedItem() == null) {
             this.tfStatus.setText("Please Select Sheet to Download");
             PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -410,14 +445,18 @@ public class HelloController {
         } else {
             try {
                 String filename = tvSheets.getSelectionModel().getSelectedItem().getPath();
-                System.out.println("Opening " + filename);
-                downloadFile(tvSheets.getSelectionModel().getSelectedItem().getPath());
-
-                this.tfStatus.setText("Sheet music downloading...");
-                showSheets();
-                PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                delay.setOnFinished(a -> this.tfStatus.setText(""));
-                delay.play();
+                if(!filename.isEmpty()) {
+                    downloadFile(tvSheets.getSelectionModel().getSelectedItem().getPath());
+                    this.tfStatus.setText("Sheet music downloading.");
+                    PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                    delay.setOnFinished(a -> this.tfStatus.setText(""));
+                    delay.play();
+                } else {
+                    this.tfStatus.setText("No sheet music to download!");
+                    PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                    delay.setOnFinished(a -> this.tfStatus.setText(""));
+                    delay.play();
+                }
             } catch (Exception ex) {
                 this.tfStatus.setText("Sheet music NOT opened!");
                 PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -467,6 +506,7 @@ public class HelloController {
 
     @FXML
     void openPdf() {
+        if(!connected) return;
         if (tvSheets.getSelectionModel().getSelectedItem() == null) {
             this.tfStatus.setText("Please Select Sheet to Open");
             PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -474,17 +514,25 @@ public class HelloController {
             delay.play();
         } else {
             String filename = tvSheets.getSelectionModel().getSelectedItem().getPath();
-            final Hyperlink hyperlink = new Hyperlink("http://" + server + "/" + filename);
-            HelloApplication.getStaticHostServices().showDocument(hyperlink.getText());
-            this.tfStatus.setText("Sheet Music Opened!");
-            PauseTransition delay = new PauseTransition(Duration.seconds(4));
-            delay.setOnFinished(a -> this.tfStatus.setText(""));
-            delay.play();
+            if (!filename.isEmpty()) {
+                final Hyperlink hyperlink = new Hyperlink("http://" + server + "/" + filename);
+                HelloApplication.getStaticHostServices().showDocument(hyperlink.getText());
+                this.tfStatus.setText("Sheet Music Opened!");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished(a -> this.tfStatus.setText(""));
+                delay.play();
+            } else {
+                this.tfStatus.setText("No Sheet Music!");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished(a -> this.tfStatus.setText(""));
+                delay.play();
+            }
         }
     }
 
     @FXML
     void removePdf(ActionEvent event) {
+        if(!connected) return;
         if (tvSheets.getSelectionModel().getSelectedItem() == null) {
             this.tfStatus.setText("Please Select Sheet to Remove!");
             PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -493,16 +541,22 @@ public class HelloController {
         } else {
             try {
                 String filename = tvSheets.getSelectionModel().getSelectedItem().getPath();
-                System.out.println("Deleting " + filename);
-                deleteFile(tvSheets.getSelectionModel().getSelectedItem().getPath());
-                String query = "UPDATE sheets SET path = '' WHERE id=" + tfId.getText();
-                executeQuery(query);
+                if(!filename.isEmpty()) {
+                    deleteFile(tvSheets.getSelectionModel().getSelectedItem().getPath());
+                    String query = "UPDATE sheets SET path = '' WHERE id=" + tfId.getText();
+                    executeQuery(query);
 
-                this.tfStatus.setText("Sheet music removed successfully");
-                showSheets();
-                PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                delay.setOnFinished(a -> this.tfStatus.setText(""));
-                delay.play();
+                    this.tfStatus.setText("Sheet music removed successfully");
+                    showSheets();
+                    PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                    delay.setOnFinished(a -> this.tfStatus.setText(""));
+                    delay.play();
+                } else {
+                    this.tfStatus.setText("No sheet music to remove");
+                    PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                    delay.setOnFinished(a -> this.tfStatus.setText(""));
+                    delay.play();
+                }
             } catch (Exception ex) {
                 this.tfStatus.setText("Sheet music NOT removed!");
                 PauseTransition delay = new PauseTransition(Duration.seconds(4));

@@ -24,4 +24,4 @@ Here are the implementation details that I would like the app to do in the futur
 - Be able to search and organize by Composer and Genre(make new column in SQL)
 - Clean up GUI
 
-<img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example3.png">
+<img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example3.PNG">
