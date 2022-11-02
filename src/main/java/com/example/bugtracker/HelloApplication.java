@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
-        stage.setTitle("Michael Mark's Sheet Music Library");
+        stage.setTitle("Sheet Music Library");
     }
 
     public static void main(String[] args) {
