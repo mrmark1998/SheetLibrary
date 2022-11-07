@@ -3,6 +3,8 @@ package com.example.bugtracker;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.*;
 
 
 public class LoginController {
@@ -55,41 +58,136 @@ public class LoginController {
     }
 
     @FXML
-    public void login(ActionEvent actionEvent) throws IOException {
+    public void onEnter(ActionEvent ae) throws IOException {
+        login();
+    }
 
-        //if username exists in users then
-        //if select password from users where username = "tfUsername" == tfpassword
+    @FXML
+    public void login() throws IOException {
+
+        //User Login script:
+        //if username+password combination exists in users then check if they match text fields
         //THEN execute code:
 
-        Stage stage = (Stage) btnLogin.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
-        Stage stage2 = new Stage();
-        Scene scene = new Scene(fxmlLoader.load());
-        stage2.setScene(scene);
+        if(loginCheck(tfUser.getText(), tfPassword.getText())) {
 
+            Stage stage = (Stage) btnLogin.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
+            Stage stage2 = new Stage();
+            Scene scene = new Scene(fxmlLoader.load());
+            stage2.setScene(scene);
 
-        //if login successful, goes through timeline of loading the library-
-        Timeline timeline =
-                new Timeline(
-                        new KeyFrame(
-                                Duration.ZERO,
-                                e -> this.txStatus.setText("Logging in...")
-                                ),
-                        new KeyFrame(
-                                Duration.seconds(2),
-                                e -> {
-                                    this.txStatus.setText("Success! Loading Library..");
-                                }),
-                        // second rectangle to black, third to blue
-                        new KeyFrame(
-                                Duration.seconds(5.0), // duration doesn't stack
-                                e -> {
-                                    stage.close();
-                                    stage2.show();
-                                    stage2.setTitle("MySheet Library");
-                                })
-                        );
-        timeline.playFromStart();
+            //if login successful, goes through timeline of loading the library-
+            Timeline timeline =
+                    new Timeline(
+                            new KeyFrame(
+                                    Duration.ZERO,
+                                    e -> this.txStatus.setText("Logging in...")
+                            ),
+                            new KeyFrame(
+                                    Duration.seconds(2),
+                                    e -> {
+                                        this.txStatus.setText("Success! Loading Library..");
+                                    }),
+                            // second rectangle to black, third to blue
+                            new KeyFrame(
+                                    Duration.seconds(5.0), // duration doesn't stack
+                                    e -> {
+                                        stage.close();
+                                        stage2.show();
+                                        stage2.setTitle("MySheet Library");
+                                    })
+                    );
+            timeline.playFromStart();
+        } else {
+            this.txStatus.setText("Username/Password Login failed!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(a -> this.txStatus.setText(""));
+            delay.play();
+        }
+    }
+
+    private boolean loginCheck(String username, String password)
+    {
+        String query;
+        boolean login = false;
+
+        try {
+            Connection conn = getConnection();
+            query = "SELECT username, password FROM users WHERE (username = ? AND password = ?)";
+            System.out.println(query);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+            String checkUser = rs.getString(1);
+            String checkPass = rs.getString(2);
+
+            if((checkUser.equals(username)) && (checkPass.equals(password)))
+            {
+                login = true;
+            }
+            else
+            {
+                login = false;
+            }
+
+            conn.close();
+        }
+        catch (Exception err) {
+            System.out.println("ERROR: " + err);
+        }
+        return login;
+    }
+
+    private boolean adminCheck(String username, String password)
+    {
+        String query;
+        boolean login = false;
+
+        try {
+            Connection conn = getConnection();
+            query = "SELECT username, password, type FROM users WHERE (username = ? AND password = ?)";
+            System.out.println(query);
+            PreparedStatement ps = conn.prepareStatement(query);
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+
+            rs.next();
+            String checkUser = rs.getString(1);
+            String checkPass = rs.getString(2);
+            String checkType = rs.getString(2);
+
+            if(checkUser.equals(username) && checkPass.equals(password) && checkType.equals("Admin"))
+            {
+                login = true;
+            }
+            else
+            {
+                login = false;
+            }
+
+            conn.close();
+        }
+        catch (Exception err) {
+            System.out.println("ERROR: " + err);
+        }
+        return login;
+    }
+
+    public Connection getConnection(){
+        Connection conn;
+        try{
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/sheets", "root", "");
+            return conn;
+        } catch(Exception ex){
+            System.out.println("Error: " + ex.getMessage());
+            this.txStatus.setText("Database Error!");
+            return null;
+        }
     }
 
     @FXML
@@ -109,14 +207,21 @@ public class LoginController {
 
     @FXML
     void showAdmin(MouseEvent event) throws IOException {
-        Stage stage = (Stage) btnLogin.getScene().getWindow();
-        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("admin-user-view.fxml"));
-        Stage stage2 = new Stage();
-        Scene scene = new Scene(fxmlLoader.load());
-        stage2.setScene(scene);
-        stage.close();
-        stage2.show();
-        stage2.setTitle("MySheet User Admin Panel");
+        if(adminCheck(tfUser.getText(), tfPassword.getText())) {
+            Stage stage = (Stage) btnLogin.getScene().getWindow();
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("admin-user-view.fxml"));
+            Stage stage2 = new Stage();
+            Scene scene = new Scene(fxmlLoader.load());
+            stage2.setScene(scene);
+            stage.close();
+            stage2.show();
+            stage2.setTitle("MySheet User Admin Panel");
+        } else {
+            this.txStatus.setText("Enter Username & Password for User Admin Panel!");
+            PauseTransition delay = new PauseTransition(Duration.seconds(3));
+            delay.setOnFinished(a -> this.txStatus.setText(""));
+            delay.play();
+        }
     }
 
 

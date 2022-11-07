@@ -33,7 +33,7 @@
                   <Insets top="25.0" />
                </VBox.margin>
             </Text>
-            <TextField fx:id="tfUser" prefHeight="25.0" prefWidth="176.0" />
+            <TextField fx:id="tfUser" onAction="#onEnter" prefHeight="25.0" prefWidth="176.0" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password">
                <font>
                   <Font size="14.0" />
@@ -42,7 +42,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
             </Text>
-            <TextField fx:id="tfPassword" prefHeight="25.0" prefWidth="174.0" snapToPixel="false" />
+            <TextField fx:id="tfPassword" onAction="#onEnter" prefHeight="25.0" prefWidth="174.0" snapToPixel="false" />
          </children>
       </VBox>
       <ImageView fitHeight="128.0" fitWidth="274.0" layoutX="24.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
@@ -53,9 +53,9 @@
       <Text fx:id="txAbout" layoutX="24.0" layoutY="462.0" onMouseReleased="#showAbout" strokeType="OUTSIDE" strokeWidth="0.0" text="About" />
       <Button fx:id="btnLogin" layoutX="174.0" layoutY="292.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="72.0" text="Log In" />
       <Text fx:id="txAdmin" layoutX="76.0" layoutY="462.0" onMouseClicked="#showAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin" />
-      <Text fx:id="txStatus" layoutX="83.0" layoutY="359.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Login or Register!">
+      <Text fx:id="txStatus" layoutX="12.0" layoutY="358.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Login or Register!" textAlignment="CENTER" wrappingWidth="295.044921875">
          <font>
-            <Font size="14.0" />
+            <Font name="System Bold" size="14.0" />
          </font>
       </Text>
       <Button fx:id="btnRegister" layoutX="75.0" layoutY="292.0" mnemonicParsing="false" onAction="#showRegister" prefHeight="25.0" prefWidth="72.0" text="Register" />

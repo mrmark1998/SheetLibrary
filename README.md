@@ -1,4 +1,4 @@
-# SheetLibrary
+# MySheet
 Sheet music app that allows the user to create, read, update, and delete entries on a MySQL server
 
 <img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example1.png">
@@ -8,6 +8,16 @@ I created this app to easily organize all of the PDF sheet music that I had clut
 - JavaFX
 - SceneBuilder
 - XAMPP server with Apache/MySQL
+
+11/7/22
+- Starting to set up the program to be able to include users and types(user, artist, admin)
+- Login System is functioning and users table created
+- Created several different views - user admin panel, login, register
+- Created new logo with new name - MySheet
+To Do:
+- Create a search functionality to be able to easily search up any data and find sheets easily
+- User can add "favorites" and later bring up their favorite sheets (through SQL VIEW command?). Probably need to make another SQL table to join them by IDs.
+- Limit Artists and Admins to being able to upload sheet music
 
 11/2/22
 - Optimized the program's logic

@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
@@ -62,9 +64,9 @@
             <TableColumn fx:id="colType" prefWidth="71.5" text="Type" />
         </columns>
       </TableView>
-      <Text fx:id="tfHeader" layoutX="258.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Admin Panel" wrappingWidth="365.5224609375">
+      <Text fx:id="tfHeader" layoutX="316.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Admin Panel" wrappingWidth="365.5224609375">
          <font>
-            <Font size="46.0" />
+            <Font size="42.0" />
          </font>
       </Text>
       <Button fx:id="btnLogout" layoutX="819.0" layoutY="436.0" mnemonicParsing="false" onAction="#userLogout" prefHeight="19.0" prefWidth="46.0" text="Logout">
@@ -88,6 +90,11 @@
       <Button fx:id="btnDelete" layoutX="223.0" layoutY="312.0" mnemonicParsing="false" onAction="#userDelete" prefHeight="25.0" prefWidth="85.0" text="Delete" />
       <Button fx:id="btnClear" layoutX="255.0" layoutY="271.0" mnemonicParsing="false" onAction="#clearFields" text="Clear" />
       <Button fx:id="btnShowSheets" layoutX="782.0" layoutY="62.0" mnemonicParsing="false" onAction="#showSheets" text="Show Sheets" />
+      <ImageView fitHeight="72.0" fitWidth="379.0" layoutX="72.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@mysheet2.png" />
+         </image>
+      </ImageView>
    </children>
    <stylesheets>
       <URL value="@style.css" />

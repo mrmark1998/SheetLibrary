@@ -7,6 +7,8 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
@@ -66,9 +68,9 @@
       <Button fx:id="btnInsert" layoutX="76.0" layoutY="312.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="70.0" text="Insert" />
       <Button fx:id="btnUpdate" layoutX="153.0" layoutY="312.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="70.0" text="Update" />
       <Button fx:id="btnDelete" layoutX="230.0" layoutY="312.0" mnemonicParsing="false" onAction="#handleButtonAction" prefHeight="30.0" prefWidth="70.0" text="Delete" />
-      <Text fx:id="tfHeader" layoutX="328.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SheetMuse">
+      <Text fx:id="tfHeader" layoutX="316.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sheet Music Database">
          <font>
-            <Font size="46.0" />
+            <Font size="42.0" />
          </font>
       </Text>
       <Text fx:id="tfStatus" layoutX="100.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Connect to Database" wrappingWidth="642.9367065429688">
@@ -105,6 +107,11 @@
             <Font size="10.0" />
          </font>
       </Button>
+      <ImageView fitHeight="72.0" fitWidth="205.0" layoutX="98.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@mysheet2.png" />
+         </image>
+      </ImageView>
    </children>
    <stylesheets>
       <URL value="@style.css" />
