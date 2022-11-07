@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class MainApplication extends Application {
 
     private static HostServices hostServices ;
 
@@ -20,12 +20,12 @@ public class HelloApplication extends Application {
     public void start(Stage stage) throws IOException {
         hostServices = getHostServices();
 
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.show();
-        stage.setTitle("Sheet Music Library");
+        stage.setTitle("MySheet Login");
     }
 
     public static void main(String[] args) {

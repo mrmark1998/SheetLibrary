@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="882.0" styleClass="backgroundColor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bugtracker.AdminUserController">
+   <children>
+      <VBox layoutX="26.0" layoutY="101.0" prefHeight="169.0" prefWidth="74.0" spacing="14.0">
+         <children>
+            <Label text="Name">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Email">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Username">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label text="Password">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <Label layoutX="10.0" layoutY="115.0" text="User Type:">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <VBox layoutX="100.0" layoutY="95.0" prefHeight="193.0" prefWidth="200.0" spacing="10.0">
+         <children>
+            <TextField fx:id="tfName" layoutX="10.0" layoutY="10.0" />
+            <TextField fx:id="tfEmail" layoutX="10.0" layoutY="36.0" />
+            <TextField fx:id="tfUsername" />
+            <TextField fx:id="tfPassword" layoutX="10.0" layoutY="10.0" />
+            <ComboBox fx:id="userType" prefWidth="150.0" promptText="User" />
+         </children>
+      </VBox>
+      <TableView fx:id="tvUsers" layoutX="316.0" layoutY="95.0" onMouseClicked="#handleMouseAction" prefHeight="336.0" prefWidth="549.0">
+        <columns>
+          <TableColumn fx:id="colName" prefWidth="164.5" text="Name" />
+            <TableColumn fx:id="colEmail" minWidth="0.0" prefWidth="149.5" text="Email" />
+            <TableColumn fx:id="colUsername" prefWidth="99.5" text="Username" />
+            <TableColumn fx:id="colPassword" prefWidth="44.5" text="PW" />
+            <TableColumn fx:id="colType" prefWidth="71.5" text="Type" />
+        </columns>
+      </TableView>
+      <Text fx:id="tfHeader" layoutX="258.0" layoutY="75.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Admin Panel" wrappingWidth="365.5224609375">
+         <font>
+            <Font size="46.0" />
+         </font>
+      </Text>
+      <Button fx:id="btnLogout" layoutX="819.0" layoutY="436.0" mnemonicParsing="false" onAction="#userLogout" prefHeight="19.0" prefWidth="46.0" text="Logout">
+         <font>
+            <Font size="10.0" />
+         </font></Button>
+      <Text fx:id="regStatus" layoutX="100.0" layoutY="462.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Connect to Database" wrappingWidth="643.1365966796875">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Label layoutX="758.0" layoutY="460.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
+      <Button fx:id="btnSubmit" layoutX="25.0" layoutY="312.0" mnemonicParsing="false" onAction="#userRegister" prefHeight="25.0" prefWidth="85.0" text="Create" />
+      <Text layoutX="23.0" layoutY="463.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Status:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Line endX="144.5" layoutX="154.0" layoutY="366.0" startX="-128.5" />
+      <Button fx:id="btnUpdate" layoutX="120.0" layoutY="312.0" mnemonicParsing="false" onAction="#userUpdate" prefHeight="25.0" prefWidth="85.0" text="Update" />
+      <Button fx:id="btnDelete" layoutX="223.0" layoutY="312.0" mnemonicParsing="false" onAction="#userDelete" prefHeight="25.0" prefWidth="85.0" text="Delete" />
+      <Button fx:id="btnClear" layoutX="255.0" layoutY="271.0" mnemonicParsing="false" onAction="#clearFields" text="Clear" />
+      <Button fx:id="btnShowSheets" layoutX="782.0" layoutY="62.0" mnemonicParsing="false" onAction="#showSheets" text="Show Sheets" />
+   </children>
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
+</AnchorPane>

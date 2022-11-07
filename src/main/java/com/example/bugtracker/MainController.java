@@ -1,15 +1,20 @@
 package com.example.bugtracker;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -22,14 +27,18 @@ import org.apache.commons.net.ftp.FTPReply;
 import java.io.*;
 import java.sql.*;
 
-public class HelloController {
+public class MainController {
 
-
-    @FXML
-    private Button btnConnect;
 
     @FXML
     private CheckBox cbUpload;
+
+
+    @FXML
+    private Button btnLogout;
+
+    @FXML
+    private Button btnShowUsers;
 
     @FXML
     private Button btnRemove;
@@ -99,6 +108,10 @@ public class HelloController {
     private Text tfStatus;
 
     @FXML
+    public void initialize() {
+        showSheets();
+    }
+    @FXML
     void clearFields(ActionEvent event) {
         tfId.clear();
         tfTitle.clear();
@@ -109,34 +122,8 @@ public class HelloController {
         tvSheets.getSelectionModel().select(null);
     }
 
-    public static boolean connected = false;
-    @FXML
-    void connectToDb(ActionEvent event) {
-        if(!connected) {
-            try {
-                this.tfStatus.setText("Database Connected!");
-                PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                delay.setOnFinished( a -> this.tfStatus.setText(""));
-                delay.play();
-                this.btnConnect.setText("Disconnect from Database");
-                System.out.println("Database Connection Success");
-                showSheets();
-                connected = true;
-            } catch (Exception ex) {
-                this.tfStatus.setText("Database Error!");
-            }
-        } else {
-            this.btnConnect.setText("Connect to Database");
-            this.tfStatus.setText("Database Disconnected!");
-            PauseTransition delay = new PauseTransition(Duration.seconds(4));
-            delay.setOnFinished( a -> this.tfStatus.setText("Please Connect to Database"));
-            delay.play();
-            System.out.println("Database Disconnected");
-            tvSheets.getItems().clear();
-            connected = false;
-        }
+    public static boolean connected = true;
 
-    }
     @FXML
     void handleButtonAction(ActionEvent event) {
         if(connected) {
@@ -496,7 +483,7 @@ public class HelloController {
 
 
             final Hyperlink hyperlink = new Hyperlink("D:\\Music\\" + filename);
-            HelloApplication.getStaticHostServices().showDocument(hyperlink.getText());
+            MainApplication.getStaticHostServices().showDocument(hyperlink.getText());
 
         } catch (IOException ex) {
             System.out.println("Error: " + ex.getMessage());
@@ -516,7 +503,7 @@ public class HelloController {
             String filename = tvSheets.getSelectionModel().getSelectedItem().getPath();
             if (!filename.isEmpty()) {
                 final Hyperlink hyperlink = new Hyperlink("http://" + server + "/" + filename);
-                HelloApplication.getStaticHostServices().showDocument(hyperlink.getText());
+                MainApplication.getStaticHostServices().showDocument(hyperlink.getText());
                 this.tfStatus.setText("Sheet Music Opened!");
                 PauseTransition delay = new PauseTransition(Duration.seconds(4));
                 delay.setOnFinished(a -> this.tfStatus.setText(""));
@@ -594,6 +581,72 @@ public class HelloController {
             System.out.println("Oh no, there was an error: " + ex.getMessage());
             ex.printStackTrace();
         }
+    }
+
+
+
+    @FXML
+    void showUsers() throws IOException {
+        Stage stage = (Stage) btnLogout.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("admin-user-view.fxml"));
+        Stage stage2 = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        stage2.setScene(scene);
+
+        //if registration successful, goes through timeline of going back to Login Screen-
+        Timeline timeline =
+                new Timeline(
+                        new KeyFrame(
+                                Duration.ZERO,
+                                e -> this.tfStatus.setText("Saving everything")
+                        ),
+                        new KeyFrame(
+                                Duration.seconds(2),
+                                e -> {
+                                    this.tfStatus.setText("Success! Loading user admin panel...");
+                                }),
+                        // second rectangle to black, third to blue
+                        new KeyFrame(
+                                Duration.seconds(5.0), // duration doesn't stack
+                                e -> {
+                                    stage.close();
+                                    stage2.show();
+                                    stage2.setTitle("MySheet Admin Library");
+                                })
+                );
+        timeline.playFromStart();
+    }
+
+    @FXML
+    void userLogout(ActionEvent event) throws IOException {
+        Stage stage = (Stage) btnLogout.getScene().getWindow();
+        FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
+        Stage stage2 = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        stage2.setScene(scene);
+
+        //if registration successful, goes through timeline of going back to Login Screen-
+        Timeline timeline =
+                new Timeline(
+                        new KeyFrame(
+                                Duration.ZERO,
+                                e -> this.tfStatus.setText("Thank you admin for your services! Logging out...")
+                        ),
+                        new KeyFrame(
+                                Duration.seconds(2),
+                                e -> {
+                                    this.tfStatus.setText("Bringing you back to login");
+                                }),
+                        // second rectangle to black, third to blue
+                        new KeyFrame(
+                                Duration.seconds(5.0), // duration doesn't stack
+                                e -> {
+                                    stage.close();
+                                    stage2.show();
+                                    stage2.setTitle("MySheet Login");
+                                })
+                );
+        timeline.playFromStart();
     }
 
 }
