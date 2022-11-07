@@ -13,7 +13,7 @@ I created this app to easily organize all of the PDF sheet music that I had clut
 - Starting to set up the program to be able to include users and types(user, artist, admin)
 - Login System is functioning and users table created
 - Created several different views - user admin panel, login, register
-- Created new logo with new name - MySheet
+- Created new logo with new name - MySheet<br>
 To Do:
 - Create a search functionality to be able to easily search up any data and find sheets easily
 - User can add "favorites" and later bring up their favorite sheets (through SQL VIEW command?). Probably need to make another SQL table to join them by IDs.
