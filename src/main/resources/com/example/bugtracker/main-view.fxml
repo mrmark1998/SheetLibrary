@@ -109,7 +109,7 @@
       </Button>
       <ImageView fitHeight="72.0" fitWidth="205.0" layoutX="98.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@mysheet2.png" />
+            <Image url="@mysheet4.png" />
          </image>
       </ImageView>
    </children>

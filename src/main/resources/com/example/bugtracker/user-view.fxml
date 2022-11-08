@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="601.0" prefWidth="801.0" styleClass="backgroundColor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bugtracker.UserController">
+   <children>
+      <SplitPane dividerPositions="0.34461152882205515" prefHeight="600.0" prefWidth="800.0" styleClass="backgroundColor2">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="285.0">
+               <children>
+                  <Text fx:id="txStatus" fill="#dcc5c5" layoutX="33.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Status Text)" textAlignment="CENTER" wrappingWidth="211.63671875">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="btnHome" alignment="TOP_LEFT" layoutX="66.0" layoutY="125.0" mnemonicParsing="false" onAction="#showHome" prefHeight="36.0" prefWidth="125.0" text="Home" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnSearch" alignment="TOP_LEFT" layoutX="66.0" layoutY="178.0" mnemonicParsing="false" onAction="#showSearch" prefHeight="36.0" prefWidth="125.0" text="Search" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnFavorites" alignment="TOP_LEFT" layoutX="66.0" layoutY="238.0" mnemonicParsing="false" onAction="#showFavorites" prefHeight="36.0" prefWidth="125.0" text="My Favorites" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnLogout" layoutX="76.0" layoutY="548.0" mnemonicParsing="false" onAction="#logout" prefHeight="36.0" prefWidth="125.0" text="Logout" textFill="WHITE">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Button>
+                  <FontAwesomeIconView fill="WHITE" glyphName="HOME" layoutX="21.0" layoutY="152.0" size="25" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" layoutX="21.0" layoutY="205.0" size="25" />
+                  <FontAwesomeIconView fill="WHITE" glyphName="HEART" layoutX="22.0" layoutY="265.0" size="25" />
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="411.0" prefWidth="276.0" />
+        </items>
+      </SplitPane>
+      <Label layoutX="35.0" layoutY="14.0" text="MySheet">
+         <font>
+            <Font size="58.0" />
+         </font>
+      </Label>
+      <Label layoutX="678.0" layoutY="579.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
+      <ImageView fitHeight="128.0" fitWidth="274.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@mysheet4.png" />
+         </image>
+      </ImageView>
+   </children>
+   <stylesheets>
+      <URL value="@style.css" />
+   </stylesheets>
+</AnchorPane>

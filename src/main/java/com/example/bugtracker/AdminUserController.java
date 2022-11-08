@@ -133,13 +133,13 @@ public class AdminUserController {
                                 e -> this.regStatus.setText("Saving everything")
                         ),
                         new KeyFrame(
-                                Duration.seconds(2),
+                                Duration.seconds(1.5),
                                 e -> {
                                     this.regStatus.setText("Success! Loading sheet music library...");
                                 }),
                         // second rectangle to black, third to blue
                         new KeyFrame(
-                                Duration.seconds(5.0), // duration doesn't stack
+                                Duration.seconds(3.0), // duration doesn't stack
                                 e -> {
                                     stage.close();
                                     stage2.show();

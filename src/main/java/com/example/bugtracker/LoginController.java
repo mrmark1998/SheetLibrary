@@ -72,7 +72,8 @@ public class LoginController {
         if(loginCheck(tfUser.getText(), tfPassword.getText())) {
 
             Stage stage = (Stage) btnLogin.getScene().getWindow();
-            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("main-view.fxml"));
+            //change this based on which type of user?
+            FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("user-view.fxml"));
             Stage stage2 = new Stage();
             Scene scene = new Scene(fxmlLoader.load());
             stage2.setScene(scene);
@@ -159,8 +160,8 @@ public class LoginController {
             rs.next();
             String checkUser = rs.getString(1);
             String checkPass = rs.getString(2);
-            String checkType = rs.getString(2);
-
+            String checkType = rs.getString(3);
+            System.out.println(checkType);
             if(checkUser.equals(username) && checkPass.equals(password) && checkType.equals("Admin"))
             {
                 login = true;
@@ -217,7 +218,7 @@ public class LoginController {
             stage2.show();
             stage2.setTitle("MySheet User Admin Panel");
         } else {
-            this.txStatus.setText("Enter Username & Password for User Admin Panel!");
+            this.txStatus.setText("Admin login failed!");
             PauseTransition delay = new PauseTransition(Duration.seconds(3));
             delay.setOnFinished(a -> this.txStatus.setText(""));
             delay.play();

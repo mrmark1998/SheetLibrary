@@ -601,13 +601,13 @@ public class MainController {
                                 e -> this.tfStatus.setText("Saving everything")
                         ),
                         new KeyFrame(
-                                Duration.seconds(2),
+                                Duration.seconds(1.5),
                                 e -> {
                                     this.tfStatus.setText("Success! Loading user admin panel...");
                                 }),
                         // second rectangle to black, third to blue
                         new KeyFrame(
-                                Duration.seconds(5.0), // duration doesn't stack
+                                Duration.seconds(3), // duration doesn't stack
                                 e -> {
                                     stage.close();
                                     stage2.show();

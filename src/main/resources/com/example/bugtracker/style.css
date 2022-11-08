@@ -1,4 +1,26 @@
 .backgroundColor {
     -fx-background-color: linear-gradient(to left top, #2C3F51, #3498DA);
 }
+.backgroundColor2 {
+    -fx-background-color: linear-gradient(to left top, #00264D, #204276);
+}
 
+.split-pane *.split-pane-divider {
+    -fx-padding: 0 1 0 1;
+}
+
+.button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-insets: 0 1 2 0, 0, 1, 2;
+    -fx-background-radius: 5px, 4px, 3px, 1px;
+}
+
+.button:hover{
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0 1 2 0, 0, 1, 2;
+    -fx-background-radius: 5px, 4px, 3px, 1px;
+    -fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em; /* 4 8 4 8 */
+    -fx-text-fill: -fx-text-base-color;
+    -fx-content-display: LEFT;
+}

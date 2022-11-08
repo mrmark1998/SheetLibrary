@@ -92,7 +92,7 @@
       <Button fx:id="btnShowSheets" layoutX="782.0" layoutY="62.0" mnemonicParsing="false" onAction="#showSheets" text="Show Sheets" />
       <ImageView fitHeight="72.0" fitWidth="379.0" layoutX="72.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@mysheet2.png" />
+            <Image url="@mysheet4.png" />
          </image>
       </ImageView>
    </children>

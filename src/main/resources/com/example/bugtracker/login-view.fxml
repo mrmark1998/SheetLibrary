@@ -47,7 +47,7 @@
       </VBox>
       <ImageView fitHeight="128.0" fitWidth="274.0" layoutX="24.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@mysheet2.png" />
+            <Image url="@mysheet4.png" />
          </image>
       </ImageView>
       <Text fx:id="txAbout" layoutX="24.0" layoutY="462.0" onMouseReleased="#showAbout" strokeType="OUTSIDE" strokeWidth="0.0" text="About" />
