@@ -3,8 +3,6 @@ package com.example.bugtracker;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -116,7 +114,6 @@ public class LoginController {
         try {
             Connection conn = getConnection();
             query = "SELECT username, password FROM users WHERE (username = ? AND password = ?)";
-            System.out.println(query);
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, username);
             ps.setString(2, password);
@@ -151,7 +148,6 @@ public class LoginController {
         try {
             Connection conn = getConnection();
             query = "SELECT username, password, type FROM users WHERE (username = ? AND password = ?)";
-            System.out.println(query);
             PreparedStatement ps = conn.prepareStatement(query);
             ps.setString(1, username);
             ps.setString(2, password);
@@ -161,7 +157,6 @@ public class LoginController {
             String checkUser = rs.getString(1);
             String checkPass = rs.getString(2);
             String checkType = rs.getString(3);
-            System.out.println(checkType);
             if(checkUser.equals(username) && checkPass.equals(password) && checkType.equals("Admin"))
             {
                 login = true;

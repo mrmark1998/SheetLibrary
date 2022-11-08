@@ -2,12 +2,18 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -17,7 +23,7 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="598.0" prefWidth="285.0">
                <children>
-                  <Text fx:id="txStatus" fill="#dcc5c5" layoutX="33.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(Status Text)" textAlignment="CENTER" wrappingWidth="211.63671875">
+                  <Text fx:id="txStatus" fill="#dcc5c5" layoutX="33.0" layoutY="499.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="211.63671875">
                      <font>
                         <Font size="14.0" />
                      </font>
@@ -47,7 +53,188 @@
                   <FontAwesomeIconView fill="WHITE" glyphName="HEART" layoutX="22.0" layoutY="265.0" size="25" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="411.0" prefWidth="276.0" />
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="411.0" prefWidth="276.0">
+               <children>
+                  <VBox fx:id="vbHome" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0" spacing="5.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                           <children>
+                              <Text fill="#e1e1e1" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to MySheet!">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <Text fill="#e1e1e1" strokeType="OUTSIDE" strokeWidth="0.0" text="MySheet is a modern sheet music library tool that aims to provide high quality sheet music ON DEMAND. No more searching through several websites. No more downloading poor quality sheet music. No more waiting. Access MySheet NOW." wrappingWidth="491.13671875">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Text>
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Popular Categories">
+                           <font>
+                              <Font name="System Bold" size="22.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="35.0" />
+                           </VBox.margin>
+                        </Text>
+                        <HBox prefHeight="182.0" prefWidth="500.0" spacing="15.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="136.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@chopin.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Chopin Collection" textFill="#b7b7b7" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="137.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@anime.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Anime" textFill="#b7b7b7" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" layoutX="184.0" layoutY="10.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="142.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@pianist.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Original Artists" textFill="#b7b7b7" />
+                                 </children>
+                              </VBox>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vbSearch" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0" visible="false">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0" spacing="5.0">
+                           <children>
+                              <FontAwesomeIconView fill="#dddddda1" glyphName="SEARCH" size="25" wrappingWidth="32.214284896850586" />
+                              <TextField fx:id="tfSearch" prefHeight="36.0" prefWidth="451.0" promptText="What do you want to play?">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </TextField>
+                              <Button fx:id="btnX" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0" text="X">
+                                 <font>
+                                    <Font size="15.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </HBox>
+                        <TableView fx:id="tvSheets" prefHeight="471.0" prefWidth="500.0">
+                          <columns>
+                            <TableColumn fx:id="colTitle" prefWidth="194.0" text="Title" />
+                            <TableColumn fx:id="colComposer" prefWidth="169.5" text="Composer" />
+                              <TableColumn fx:id="colYear" prefWidth="50.0" text="Year" />
+                              <TableColumn fx:id="colPages" prefWidth="57.5" text="Pages" />
+                          </columns>
+                        </TableView>
+                        <HBox alignment="TOP_CENTER" prefHeight="141.0" prefWidth="500.0" spacing="15.0">
+                           <children>
+                              <Button fx:id="btnFavorite" mnemonicParsing="false" onAction="#addFavorite" text="Favorite">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnView" layoutX="254.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewSheet" text="View">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="Download" mnemonicParsing="false" onAction="#downloadSheet" text="Download">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnUnfavorite" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#unFavorite" text="Unfavorite">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="vbFavorites" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0" visible="false">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0" spacing="5.0">
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                           <children>
+                              <Text fill="#e1e1e1" strokeType="OUTSIDE" strokeWidth="0.0" text="My Favorites">
+                                 <font>
+                                    <Font name="System Bold" size="36.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </HBox>
+                        <Text fill="#e1e1e1" strokeType="OUTSIDE" strokeWidth="0.0" text="Got a lot of favorites, don'tcha?">
+                           <VBox.margin>
+                              <Insets bottom="15.0" top="5.0" />
+                           </VBox.margin>
+                        </Text>
+                        <TableView fx:id="tvFavorites" prefHeight="365.0" prefWidth="500.0">
+                           <columns>
+                              <TableColumn fx:id="colTitle1" prefWidth="194.0" text="Title" />
+                              <TableColumn fx:id="colComposer1" prefWidth="169.5" text="Composer" />
+                              <TableColumn fx:id="colYear1" prefWidth="50.0" text="Year" />
+                              <TableColumn fx:id="colPages1" prefWidth="57.5" text="Pages" />
+                           </columns>
+                        </TableView>
+                        <HBox alignment="TOP_CENTER" prefHeight="141.0" prefWidth="500.0" spacing="15.0">
+                           <children>
+                              <Button fx:id="btnFavorite1" mnemonicParsing="false" onAction="#addFavorite" text="Favorite">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnView1" layoutX="254.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewSheet" text="View">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="Download1" mnemonicParsing="false" onAction="#downloadSheet" text="Download">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="btnUnfavorite1" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#unFavorite" text="Unfavorite">
+                                 <font>
+                                    <Font name="System Bold" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
         </items>
       </SplitPane>
       <Label layoutX="35.0" layoutY="14.0" text="MySheet">
