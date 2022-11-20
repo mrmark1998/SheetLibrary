@@ -94,6 +94,12 @@ public class LoginController {
                                     e -> {
                                         stage.close();
                                         stage2.show();
+                                        UserController controller = (UserController) fxmlLoader.getController();
+                                        try {
+                                            controller.updateUsernameText(tfUser.getText());
+                                        } catch (SQLException ex) {
+                                            throw new RuntimeException(ex);
+                                        }
                                         stage2.setTitle("MySheet Library");
                                     })
                     );

@@ -55,43 +55,47 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="411.0" prefWidth="276.0">
                <children>
-                  <VBox fx:id="vbHome" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0">
+                  <VBox fx:id="vbHome" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0" visible="false">
                      <children>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0" spacing="5.0">
                            <VBox.margin>
                               <Insets bottom="15.0" />
                            </VBox.margin>
                            <children>
-                              <Text fill="#e1e1e1" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to MySheet!">
+                              <Text fill="#e1e1e1" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to MySheet">
                                  <font>
                                     <Font name="System Bold" size="36.0" />
                                  </font>
                               </Text>
                            </children>
                         </HBox>
-                        <Text fill="#e1e1e1" strokeType="OUTSIDE" strokeWidth="0.0" text="MySheet is a modern sheet music library tool that aims to provide high quality sheet music ON DEMAND. No more searching through several websites. No more downloading poor quality sheet music. No more waiting. Access MySheet NOW." wrappingWidth="491.13671875">
+                        <Text fx:id="txGreeting" fill="#e1e1e1" layoutX="10.0" layoutY="90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Greetings, from MySheet!" wrappingWidth="491.13671875">
                            <font>
-                              <Font size="16.0" />
+                              <Font name="System Bold" size="16.0" />
                            </font>
+                           <VBox.margin>
+                              <Insets top="20.0" />
+                           </VBox.margin>
                         </Text>
                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Popular Categories">
                            <font>
                               <Font name="System Bold" size="22.0" />
                            </font>
                            <VBox.margin>
-                              <Insets bottom="15.0" top="35.0" />
+                              <Insets bottom="15.0" top="20.0" />
                            </VBox.margin>
                         </Text>
                         <HBox prefHeight="182.0" prefWidth="500.0" spacing="15.0">
                            <children>
-                              <VBox alignment="TOP_CENTER" spacing="10.0">
+                              <VBox alignment="TOP_CENTER" spacing="10.0" />
+                              <VBox alignment="TOP_CENTER" layoutX="184.0" layoutY="10.0" spacing="10.0">
                                  <children>
-                                    <ImageView fitHeight="136.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="142.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@chopin.png" />
+                                          <Image url="@pianist.jpg" />
                                        </image>
                                     </ImageView>
-                                    <Label text="Chopin Collection" textFill="#b7b7b7" />
+                                    <Label text="Classical" textFill="#b7b7b7" />
                                  </children>
                               </VBox>
                               <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0">
@@ -104,16 +108,42 @@
                                     <Label text="Anime" textFill="#b7b7b7" />
                                  </children>
                               </VBox>
-                              <VBox alignment="TOP_CENTER" layoutX="184.0" layoutY="10.0" spacing="10.0">
+                           </children>
+                        </HBox>
+                        <Text fill="WHITE" layoutX="10.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Popular Artists">
+                           <font>
+                              <Font name="System Bold" size="22.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </Text>
+                        <HBox layoutX="10.0" layoutY="214.0" prefHeight="182.0" prefWidth="500.0" spacing="15.0">
+                           <children>
+                              <VBox alignment="TOP_CENTER" spacing="10.0">
                                  <children>
-                                    <ImageView fitHeight="142.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="136.0" fitWidth="155.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@pianist.jpg" />
+                                          <Image url="@chopin.png" />
                                        </image>
+                                       <VBox.margin>
+                                          <Insets left="15.0" />
+                                       </VBox.margin>
                                     </ImageView>
-                                    <Label text="Original Artists" textFill="#b7b7b7" />
+                                    <Label text="Chopin Collection" textFill="#b7b7b7" />
                                  </children>
                               </VBox>
+                              <VBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0">
+                                 <children>
+                                    <ImageView fitHeight="137.0" fitWidth="148.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@rachmaninoff.jpg" />
+                                       </image>
+                                    </ImageView>
+                                    <Label text="Rachmaninoff" textFill="#b7b7b7" />
+                                 </children>
+                              </VBox>
+                              <VBox alignment="TOP_CENTER" layoutX="184.0" layoutY="10.0" spacing="10.0" />
                            </children>
                         </HBox>
                      </children>
@@ -156,12 +186,12 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btnView" layoutX="254.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewSheet" text="View">
+                              <Button fx:id="btnView" layoutX="254.0" layoutY="10.0" mnemonicParsing="false" onAction="#openPdf" text="View">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="Download" mnemonicParsing="false" onAction="#downloadSheet" text="Download">
+                              <Button fx:id="btnDownload" mnemonicParsing="false" onAction="#downloadPdf" text="Download">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
@@ -178,7 +208,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox fx:id="vbFavorites" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0" visible="false">
+                  <VBox fx:id="vbFavorites" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0" spacing="5.0">
                            <VBox.margin>
@@ -212,12 +242,12 @@
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="btnView1" layoutX="254.0" layoutY="10.0" mnemonicParsing="false" onAction="#viewSheet" text="View">
+                              <Button fx:id="btnView1" layoutX="254.0" layoutY="10.0" mnemonicParsing="false" onAction="#openPdf" text="View">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>
                               </Button>
-                              <Button fx:id="Download1" mnemonicParsing="false" onAction="#downloadSheet" text="Download">
+                              <Button fx:id="Download1" mnemonicParsing="false" onAction="#downloadPdf" text="Download">
                                  <font>
                                     <Font name="System Bold" size="12.0" />
                                  </font>

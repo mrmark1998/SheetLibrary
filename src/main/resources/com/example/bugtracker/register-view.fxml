@@ -12,9 +12,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0" prefWidth="352.0" styleClass="backgroundColor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bugtracker.RegisterController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="591.0" prefWidth="352.0" styleClass="backgroundColor" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.bugtracker.RegisterController">
    <children>
-      <VBox layoutX="39.0" layoutY="197.0" prefHeight="169.0" prefWidth="74.0" spacing="15.0">
+      <VBox layoutX="39.0" layoutY="327.0" prefHeight="169.0" prefWidth="74.0" spacing="15.0">
          <children>
             <Label text="Name">
                <font>
@@ -43,7 +43,7 @@
             </Label>
          </children>
       </VBox>
-      <VBox layoutX="113.0" layoutY="197.0" prefHeight="169.0" prefWidth="200.0" spacing="10.0">
+      <VBox layoutX="113.0" layoutY="327.0" prefHeight="169.0" prefWidth="200.0" spacing="10.0">
          <children>
             <TextField fx:id="tfName" layoutX="10.0" layoutY="10.0" />
             <TextField fx:id="tfEmail" layoutX="10.0" layoutY="36.0" />
@@ -57,20 +57,25 @@
             <Font size="28.0" />
          </font>
       </Text>
-      <Button fx:id="btnLogin" layoutX="192.0" layoutY="381.0" mnemonicParsing="false" onAction="#userRegister" prefHeight="25.0" prefWidth="86.0" text="Register" />
+      <Button fx:id="btnLogin" layoutX="192.0" layoutY="511.0" mnemonicParsing="false" onAction="#userRegister" prefHeight="25.0" prefWidth="86.0" text="Register" />
       <Text fx:id="regStatus" layoutX="76.0" layoutY="437.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="200.0">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Label layoutX="220.0" layoutY="480.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
+      <Label layoutX="220.0" layoutY="571.0" text="ⓒ 2022 Michael Mark" textFill="#929292" />
       <ImageView fitHeight="130.0" fitWidth="319.0" layoutX="17.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@mysheet4.png" />
          </image>
       </ImageView>
-      <Button fx:id="btnBack" layoutX="75.0" layoutY="381.0" mnemonicParsing="false" onAction="#showLogin" prefHeight="25.0" prefWidth="86.0" text="Back" />
-      <Button fx:id="btnClear" layoutX="271.0" layoutY="336.0" mnemonicParsing="false" onAction="#clearFields" text="Clear" />
+      <Button fx:id="btnBack" layoutX="75.0" layoutY="511.0" mnemonicParsing="false" onAction="#showLogin" prefHeight="25.0" prefWidth="86.0" text="Back" />
+      <Button fx:id="btnClear" layoutX="270.0" layoutY="468.0" mnemonicParsing="false" onAction="#clearFields" text="Clear" />
+      <Text fx:id="tfHeader1" layoutX="21.0" layoutY="209.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MySheet is a modern sheet music library tool that aims to provide high quality sheet music ON DEMAND. No more searching through several websites. No more downloading poor quality sheet music. No more waiting. Access MySheet NOW!" wrappingWidth="310.6949768066406">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
    </children>
    <stylesheets>
       <URL value="@style.css" />

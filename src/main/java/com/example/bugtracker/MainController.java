@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -297,13 +298,13 @@ public class MainController {
         }
     }
 
-    final File[] fileToSend = new File[1];
 
     //FTP Server Variables -- Edit your settings here
     final String server = "127.0.0.1";
     final int port = 21;
     final String username = "root";
     final String password = "";
+    final File[] fileToSend = new File[1];
 
     public void sendFileFTP() {
         if(fileToSend[0] == null) {
@@ -434,10 +435,6 @@ public class MainController {
                 String filename = tvSheets.getSelectionModel().getSelectedItem().getPath();
                 if(!filename.isEmpty()) {
                     downloadFile(tvSheets.getSelectionModel().getSelectedItem().getPath());
-                    this.tfStatus.setText("Sheet music downloading.");
-                    PauseTransition delay = new PauseTransition(Duration.seconds(4));
-                    delay.setOnFinished(a -> this.tfStatus.setText(""));
-                    delay.play();
                 } else {
                     this.tfStatus.setText("No sheet music to download!");
                     PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -463,9 +460,15 @@ public class MainController {
             ftpClient.enterLocalPassiveMode();
             ftpClient.setFileType(FTP.BINARY_FILE_TYPE);
 
-            // APPROACH #2: using InputStream retrieveFileStream(String)
+            // *Should Implement a file chooser for the user to save it to a certain FILENAME+path
+            Stage stage = new Stage();
+            DirectoryChooser directoryChooser = new DirectoryChooser();
+            directoryChooser.setInitialDirectory(new File("D:\\Music"));
+            File selectedDirectory = directoryChooser.showDialog(stage);
+            System.out.println(selectedDirectory.getAbsolutePath());
+
             String remoteFile2 = filename;
-            File downloadFile2 = new File("D:\\Music\\" + filename);
+            File downloadFile2 = new File(selectedDirectory.getAbsolutePath() + "\\" + filename);
             OutputStream outputStream2 = new BufferedOutputStream(new FileOutputStream(downloadFile2));
             InputStream inputStream = ftpClient.retrieveFileStream(remoteFile2);
             byte[] bytesArray = new byte[4096];
@@ -476,7 +479,11 @@ public class MainController {
 
             boolean success = ftpClient.completePendingCommand();
             if (success) {
-                System.out.println("File #2 has been downloaded successfully.");
+                System.out.println("File has been downloaded successfully.");
+                tfStatus.setText("File downloaded successfully");
+                PauseTransition delay = new PauseTransition(Duration.seconds(4));
+                delay.setOnFinished(a -> this.tfStatus.setText(""));
+                delay.play();
             }
             outputStream2.close();
             inputStream.close();
