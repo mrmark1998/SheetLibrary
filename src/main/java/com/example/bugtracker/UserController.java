@@ -5,6 +5,7 @@ import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,9 @@ import org.apache.commons.net.ftp.FTPClient;
 
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class UserController {
 
@@ -33,9 +37,6 @@ public class UserController {
 
     @FXML
     private Button btnFavorite;
-
-    @FXML
-    private Button btnFavorite1;
 
     @FXML
     private Button btnFavorites;
@@ -65,28 +66,25 @@ public class UserController {
     private Button btnX;
 
     @FXML
+    private TableColumn<Sheets, String> colTitle;
+    @FXML
     private TableColumn<Sheets, String> colComposer;
 
     @FXML
-    private TableColumn<Sheets, String> colComposer1;
-
+    private TableColumn<Sheets, Integer> colYear;
     @FXML
     private TableColumn<Sheets, Integer> colPages;
 
-    @FXML
-    private TableColumn<Sheets, Integer> colPages1;
 
     @FXML
-    private TableColumn<Sheets, String> colTitle;
+    private TableColumn<Sheets, String> colTitleFav;
+    @FXML
+    private TableColumn<Sheets, String> colComposerFav;
+    @FXML
+    private TableColumn<Sheets, Integer> colYearFav;
 
     @FXML
-    private TableColumn<Sheets, String> colTitle1;
-
-    @FXML
-    private TableColumn<Sheets, Integer> colYear;
-
-    @FXML
-    private TableColumn<Sheets, Integer> colYear1;
+    private TableColumn<Sheets, Integer> colPagesFav;
 
     @FXML
     private TextField tfSearch;
@@ -184,7 +182,7 @@ public class UserController {
         vbSearch.setVisible(true);
         vbFavorites.setVisible(false);
         currentSheet = tvSheets;
-        showSheets();
+        if(tfSearch.getText().isEmpty()) showSheets();
     }
 
     @FXML
@@ -193,6 +191,7 @@ public class UserController {
         vbSearch.setVisible(false);
         vbFavorites.setVisible(true);
         currentSheet = tvFavorites;
+        showFaves();
     }
 
     //-------------DB necessities-------------------------
@@ -248,14 +247,59 @@ public class UserController {
     }
 
     public void showSheets() {
-        ObservableList<Sheets> list = getSheetsList();
+        ObservableList<Sheets> sheets = getSheetsList();
         colTitle.setCellValueFactory(new PropertyValueFactory<Sheets, String>("title"));
         colComposer.setCellValueFactory(new PropertyValueFactory<Sheets, String>("composer"));
         colYear.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("year"));
         colPages.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("pages"));
-
-        tvSheets.setItems(list);
+        tvSheets.setItems(sheets);
     }
+
+    //----------------SEARCH function -----------------------------------------
+
+    public void initialize() {
+        ObservableList<Sheets> sheets = getSheetsList();
+        FilteredList<Sheets> filteredData = new FilteredList<>(FXCollections.observableList(sheets));
+        tvSheets.setItems(filteredData);
+
+        tfSearch.textProperty().addListener((observable, oldValue, newValue) ->
+                tvSheets.setItems(filterList(sheets, newValue.toLowerCase()))
+        );
+    }
+
+    private ObservableList<Sheets> filterList(List<Sheets> list, String searchText){
+        List<Sheets> filteredList = new ArrayList<>();
+        System.out.println(searchText);
+        System.out.println(Arrays.toString(list.toArray()));
+
+        for (Sheets sheet : list){
+            if(searchFindsSheet(sheet, searchText)){
+                filteredList.add(sheet);
+            }
+        }
+        return FXCollections.observableList(filteredList);
+    }
+
+    private boolean searchFindsSheet(Sheets sheet, String searchText){
+        String inputStr = sheet.getComposer().toLowerCase() + " " +
+                sheet.getTitle().toLowerCase() + " " +
+                Integer.valueOf(sheet.getYear()).toString();
+        String[] items = searchText.split(" ");
+        return Arrays.stream(items).allMatch(inputStr::contains);
+
+        // New search much better than old one, but including for reference:
+        // return (sheet.getComposer().toLowerCase().contains(searchText)) ||
+        //        (sheet.getTitle().toLowerCase().contains(searchText)) ||
+        //        Integer.valueOf(sheet.getYear()).toString().contains(searchText);
+    }
+
+
+    @FXML
+    public void handleClearSearchText(ActionEvent event) {
+        tfSearch.setText("");
+        event.consume();
+    }
+
 
     //---------------View/Download PDF-----------------------------------
     //FTP Server Variables -- Edit your settings here
@@ -375,6 +419,7 @@ public class UserController {
             try {
                 Integer sheetId = currentSheet.getSelectionModel().getSelectedItem().getId()    ;
                 sqlAddFavorite(Id, sheetId);
+                if(currentSheet == tvFavorites) showFaves();
                 this.txStatus.setText("Sheet music favorited!");  //need to find a way to check for duplicate
                 PauseTransition delay = new PauseTransition(Duration.seconds(4));
                 delay.setOnFinished(a -> this.txStatus.setText(""));
@@ -403,8 +448,9 @@ public class UserController {
             delay.play();
         } else {
             try {
-                Integer sheetId = currentSheet.getSelectionModel().getSelectedItem().getId()    ;
+                Integer sheetId = currentSheet.getSelectionModel().getSelectedItem().getId();
                 sqlunFavorite(Id, sheetId);
+                if(currentSheet == tvFavorites) showFaves();
                 this.txStatus.setText("Sheet music Unfavorited!");
                 PauseTransition delay = new PauseTransition(Duration.seconds(4));
                 delay.setOnFinished(a -> this.txStatus.setText(""));
@@ -424,5 +470,46 @@ public class UserController {
         executeQuery(query);
     }
 
+
+    public ObservableList<Sheets> getFaveList() {
+        ObservableList<Sheets> sheetList = FXCollections.observableArrayList();
+        Connection conn = getConnection();
+        String query = "SELECT * FROM sheets WHERE id in\n" +
+                "(\n" +
+                "  SELECT sheet_id FROM fave WHERE user_id =" + Id + "\n" +
+                ");";
+        Statement st;
+        ResultSet rs;
+
+        try{
+            st = conn.createStatement();
+            rs = st.executeQuery(query);
+            Sheets sheets;
+            while(rs.next()) {
+
+                sheets = new Sheets(rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("composer"),
+                        rs.getInt("year"),
+                        rs.getInt("pages"),
+                        rs.getString("path"));
+
+                sheetList.add(sheets);
+            }
+        } catch(Exception ex) {
+            ex.printStackTrace();
+        }
+        return sheetList;
+    }
+
+    public void showFaves() {
+        ObservableList<Sheets> list = getFaveList();
+        colTitleFav.setCellValueFactory(new PropertyValueFactory<Sheets, String>("title"));
+        colComposerFav.setCellValueFactory(new PropertyValueFactory<Sheets, String>("composer"));
+        colYearFav.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("year"));
+        colPagesFav.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("pages"));
+
+        tvFavorites.setItems(list);
+    }
 
 }

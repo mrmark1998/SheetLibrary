@@ -104,7 +104,6 @@ public class MainController {
     @FXML
     private TableView<Sheets> tvSheets;
 
-
     @FXML
     private Text tfStatus;
 

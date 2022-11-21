@@ -55,7 +55,7 @@
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="411.0" prefWidth="276.0">
                <children>
-                  <VBox fx:id="vbHome" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0" visible="false">
+                  <VBox fx:id="vbHome" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0">
                      <children>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0" spacing="5.0">
                            <VBox.margin>
@@ -161,7 +161,7 @@
                                     <Insets />
                                  </opaqueInsets>
                               </TextField>
-                              <Button fx:id="btnX" mnemonicParsing="false" prefHeight="25.0" prefWidth="32.0" text="X">
+                              <Button fx:id="btnX" mnemonicParsing="false" onAction="#handleClearSearchText" prefHeight="25.0" prefWidth="32.0" text="X">
                                  <font>
                                     <Font size="15.0" />
                                  </font>
@@ -208,7 +208,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <VBox fx:id="vbFavorites" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0">
+                  <VBox fx:id="vbFavorites" layoutX="13.0" layoutY="13.0" prefHeight="574.0" prefWidth="500.0" visible="false">
                      <children>
                         <HBox alignment="CENTER" prefHeight="46.0" prefWidth="456.0" spacing="5.0">
                            <VBox.margin>
@@ -226,22 +226,20 @@
                            <VBox.margin>
                               <Insets bottom="15.0" top="5.0" />
                            </VBox.margin>
+                           <font>
+                              <Font name="System Bold" size="16.0" />
+                           </font>
                         </Text>
                         <TableView fx:id="tvFavorites" prefHeight="365.0" prefWidth="500.0">
                            <columns>
-                              <TableColumn fx:id="colTitle1" prefWidth="194.0" text="Title" />
-                              <TableColumn fx:id="colComposer1" prefWidth="169.5" text="Composer" />
-                              <TableColumn fx:id="colYear1" prefWidth="50.0" text="Year" />
-                              <TableColumn fx:id="colPages1" prefWidth="57.5" text="Pages" />
+                              <TableColumn fx:id="colTitleFav" prefWidth="194.0" text="Title" />
+                              <TableColumn fx:id="colComposerFav" prefWidth="169.5" text="Composer" />
+                              <TableColumn fx:id="colYearFav" prefWidth="50.0" text="Year" />
+                              <TableColumn fx:id="colPagesFav" prefWidth="57.5" text="Pages" />
                            </columns>
                         </TableView>
                         <HBox alignment="TOP_CENTER" prefHeight="141.0" prefWidth="500.0" spacing="15.0">
                            <children>
-                              <Button fx:id="btnFavorite1" mnemonicParsing="false" onAction="#addFavorite" text="Favorite">
-                                 <font>
-                                    <Font name="System Bold" size="12.0" />
-                                 </font>
-                              </Button>
                               <Button fx:id="btnView1" layoutX="254.0" layoutY="10.0" mnemonicParsing="false" onAction="#openPdf" text="View">
                                  <font>
                                     <Font name="System Bold" size="12.0" />

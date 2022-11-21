@@ -9,6 +9,28 @@ I created this app to easily organize all of the PDF sheet music that I had clut
 - SceneBuilder
 - XAMPP server with Apache/MySQL
 
+11/20/22
+- Finished the SQL logistics in the program
+- Added Favorite Sheets database
+- Created Dynamic Search capabilities with improved search
+- Joined the SQL tables to show user their favorites
+
+To Do:
+- Make user favorites have Star in main list
+- Make artist page slightly different so they can upload files
+- Make admin page slightly different so they can enter admin mode
+- Make categories for the sheets and be able to search by category too.
+
+This was a pretty big update, and I'd say I've accomplished quite a lot so far.  Most of the features are complete, so I just need to add some additional features.  Here is a screenshot of the user GUI:
+
+
+<img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example4.png">
+<img src="https://github.com/mrmark1998/SheetLibrary/blob/master/example5.png">
+
+
+11/19/22
+- Created User GUI that looks sleek and modern with several tabs and options
+
 11/7/22
 - Starting to set up the program to be able to include users and types(user, artist, admin)
 - Login System is functioning and users table created
