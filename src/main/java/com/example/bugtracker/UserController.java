@@ -397,11 +397,14 @@ public class UserController {
         }
     }
 
+    // ** need to add checks to see if favorite already exists in db **
+
     public void sqlAddFavorite(int userId, int sheetId) {
         String query = "INSERT INTO fave VALUES (" + userId  + ", " + sheetId + ")";
         executeQuery(query);
     }
 
+    // ** need to add checks to see if favorite doesn't exist in db **
     @FXML
     void unFavorite() {
         if (currentSheet.getSelectionModel().getSelectedItem() == null) {
