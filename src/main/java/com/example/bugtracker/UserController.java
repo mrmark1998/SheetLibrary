@@ -30,40 +30,7 @@ import java.util.List;
 public class UserController {
 
     @FXML
-    private Button btnDownload;
-
-    @FXML
-    private Button Download1;
-
-    @FXML
-    private Button btnFavorite;
-
-    @FXML
-    private Button btnFavorites;
-
-    @FXML
-    private Button btnHome;
-
-    @FXML
     private Button btnLogout;
-
-    @FXML
-    private Button btnSearch;
-
-    @FXML
-    private Button btnUnfavorite;
-
-    @FXML
-    private Button btnUnfavorite1;
-
-    @FXML
-    private Button btnView;
-
-    @FXML
-    private Button btnView1;
-
-    @FXML
-    private Button btnX;
 
     @FXML
     private TableColumn<Sheets, String> colTitle;
@@ -137,7 +104,7 @@ public class UserController {
     }
 
     @FXML
-    void logout(ActionEvent event) throws IOException {
+    void logout() throws IOException {
         Stage stage = (Stage) btnLogout.getScene().getWindow();
         FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("login-view.fxml"));
         Stage stage2 = new Stage();
@@ -170,14 +137,14 @@ public class UserController {
 
 
     @FXML
-    void showHome(ActionEvent event) {
+    void showHome() {
         vbHome.setVisible(true);
         vbSearch.setVisible(false);
         vbFavorites.setVisible(false);
     }
 
     @FXML
-    void showSearch(ActionEvent event) {
+    void showSearch() {
         vbHome.setVisible(false);
         vbSearch.setVisible(true);
         vbFavorites.setVisible(false);
@@ -186,7 +153,7 @@ public class UserController {
     }
 
     @FXML
-    void showFavorites(ActionEvent event) {
+    void showFavorites() {
         vbHome.setVisible(false);
         vbSearch.setVisible(false);
         vbFavorites.setVisible(true);
@@ -248,10 +215,10 @@ public class UserController {
 
     public void showSheets() {
         ObservableList<Sheets> sheets = getSheetsList();
-        colTitle.setCellValueFactory(new PropertyValueFactory<Sheets, String>("title"));
-        colComposer.setCellValueFactory(new PropertyValueFactory<Sheets, String>("composer"));
-        colYear.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("year"));
-        colPages.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("pages"));
+        colTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colComposer.setCellValueFactory(new PropertyValueFactory<>("composer"));
+        colYear.setCellValueFactory(new PropertyValueFactory<>("year"));
+        colPages.setCellValueFactory(new PropertyValueFactory<>("pages"));
         tvSheets.setItems(sheets);
     }
 
@@ -269,8 +236,6 @@ public class UserController {
 
     private ObservableList<Sheets> filterList(List<Sheets> list, String searchText){
         List<Sheets> filteredList = new ArrayList<>();
-        System.out.println(searchText);
-        System.out.println(Arrays.toString(list.toArray()));
 
         for (Sheets sheet : list){
             if(searchFindsSheet(sheet, searchText)){
@@ -307,7 +272,6 @@ public class UserController {
     final int port = 21;
     final String username = "root";
     final String password = "";
-    final File[] fileToSend = new File[1];
 
     @FXML
     void openPdf() {
@@ -377,10 +341,9 @@ public class UserController {
             File selectedDirectory = directoryChooser.showDialog(stage);
             System.out.println(selectedDirectory.getAbsolutePath());
 
-            String remoteFile2 = filename;
             File downloadFile2 = new File(selectedDirectory.getAbsolutePath() + "\\" + filename);
             OutputStream outputStream2 = new BufferedOutputStream(new FileOutputStream(downloadFile2));
-            InputStream inputStream = ftpClient.retrieveFileStream(remoteFile2);
+            InputStream inputStream = ftpClient.retrieveFileStream(filename);
             byte[] bytesArray = new byte[4096];
             int bytesRead = -1;
             while ((bytesRead = inputStream.read(bytesArray)) != -1) {
@@ -409,7 +372,7 @@ public class UserController {
     //--------------FAVORITES ADD/REMOVE-------------------------------------
 
     @FXML
-    void addFavorite(ActionEvent event) {
+    void addFavorite() {
         if (currentSheet.getSelectionModel().getSelectedItem() == null) {
             this.txStatus.setText("Please Select Sheet to Favorite");
             PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -417,7 +380,7 @@ public class UserController {
             delay.play();
         } else {
             try {
-                Integer sheetId = currentSheet.getSelectionModel().getSelectedItem().getId()    ;
+                int sheetId = currentSheet.getSelectionModel().getSelectedItem().getId()    ;
                 sqlAddFavorite(Id, sheetId);
                 if(currentSheet == tvFavorites) showFaves();
                 this.txStatus.setText("Sheet music favorited!");  //need to find a way to check for duplicate
@@ -440,7 +403,7 @@ public class UserController {
     }
 
     @FXML
-    void unFavorite(ActionEvent event) {
+    void unFavorite() {
         if (currentSheet.getSelectionModel().getSelectedItem() == null) {
             this.txStatus.setText("Please Select Sheet to Unfavorite");
             PauseTransition delay = new PauseTransition(Duration.seconds(4));
@@ -448,7 +411,7 @@ public class UserController {
             delay.play();
         } else {
             try {
-                Integer sheetId = currentSheet.getSelectionModel().getSelectedItem().getId();
+                int sheetId = currentSheet.getSelectionModel().getSelectedItem().getId();
                 sqlunFavorite(Id, sheetId);
                 if(currentSheet == tvFavorites) showFaves();
                 this.txStatus.setText("Sheet music Unfavorited!");
@@ -504,10 +467,10 @@ public class UserController {
 
     public void showFaves() {
         ObservableList<Sheets> list = getFaveList();
-        colTitleFav.setCellValueFactory(new PropertyValueFactory<Sheets, String>("title"));
-        colComposerFav.setCellValueFactory(new PropertyValueFactory<Sheets, String>("composer"));
-        colYearFav.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("year"));
-        colPagesFav.setCellValueFactory(new PropertyValueFactory<Sheets, Integer>("pages"));
+        colTitleFav.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colComposerFav.setCellValueFactory(new PropertyValueFactory<>("composer"));
+        colYearFav.setCellValueFactory(new PropertyValueFactory<>("year"));
+        colPagesFav.setCellValueFactory(new PropertyValueFactory<>("pages"));
 
         tvFavorites.setItems(list);
     }
